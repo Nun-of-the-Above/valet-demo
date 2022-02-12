@@ -20,7 +20,7 @@ function App() {
         <AuthProvider>
           <SessionProvider>
             <LoadingGateAuth>
-              <div>
+              <div className="w-full h-full">
                 <Header>VALET</Header>
                 <Home />
               </div>

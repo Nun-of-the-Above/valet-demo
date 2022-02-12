@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const SiteWrapper = styled.div`
   display: grid;
-  grid-template-rows: 0.5fr 2fr 2fr;
-  height: 99.5vh;
+  grid-template-rows: 0.5fr 2fr;
+  height: 85vh;
   background-color: white;
 `;
 

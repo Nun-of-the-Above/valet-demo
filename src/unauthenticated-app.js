@@ -49,26 +49,30 @@ export function UnauthenticatedApp() {
                 </Button>
               </Center>
             </form>
-            {error ? <p>Wrong secret word. Try again.</p> : <></>}
+            {error && secretWord !== "admin" && (
+              <Text>Wrong secret word. Try again.</Text>
+            )}
+            {error && secretWord === "admin" && (
+              <>
+                <Box className="absolute bottom-0">
+                  <Heading size="sm">Admin Login</Heading>
+                  <form onSubmit={(e) => handleLogin(e)}>
+                    <Input
+                      type="text"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
 
-            <Box className="absolute bottom-0">
-              <Heading size="sm">Admin Login</Heading>
-              <form onSubmit={(e) => handleLogin(e)}>
-                <Input
-                  type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <Center>
-                  <Button type="submit">Login</Button>
-                </Center>
-              </form>
-            </Box>
+                    <Button type="submit">Login</Button>
+                  </form>
+                </Box>
+              </>
+            )}
           </Container>
         ) : (
           <p>The session was retrieved but is not active.</p>

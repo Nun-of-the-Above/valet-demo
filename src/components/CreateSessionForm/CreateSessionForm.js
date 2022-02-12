@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { functions } from "../../firestore";
 import { httpsCallable } from "@firebase/functions";
-import { Input, Heading } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
-import { Container, Stack } from "@chakra-ui/layout";
+import { Stack } from "@chakra-ui/layout";
 import {
   Drawer,
   DrawerBody,
@@ -80,7 +80,7 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
               />
               {errors.secretWord && <span>Detta måste vara med.</span>}
 
-              <Button type="submit" variant="solid">
+              <Button type="submit" variant="solid" onClick={onClose}>
                 SKAPA FÖRESTÄLLNING
               </Button>
             </Stack>
