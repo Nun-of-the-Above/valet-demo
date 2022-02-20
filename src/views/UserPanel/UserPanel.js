@@ -1,18 +1,20 @@
 import { useAuth } from "../../context/auth-context";
 import { useSessionContext } from "../../context/session-context";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect } from "react";
-import { Button } from "@chakra-ui/button";
+import { useEffect, useState } from "react";
 import {
   Box,
-  Center,
-  Container,
   Heading,
   Text,
   VStack,
+  Grid,
+  GridItem,
+  Container,
 } from "@chakra-ui/layout";
 import { VotingBox } from "../../components/VotingBox";
-import { Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Pie, PieChart } from "recharts";
+import { ResultsBoxUserView } from "../../components/ResultsBoxUserView/ResultsBoxUserView";
+import { Button, Image } from "@chakra-ui/react";
 
 export function UserPanel() {
   const { logout } = useAuth();
@@ -55,15 +57,42 @@ export function UserPanel() {
                 </VStack>
               )}
 
-              {activeRound.displayResults && <ResultsBox />}
-
-              {activeSession.done && (
-                <p>The session is done! Winner is {currCandidates}</p>
-              )}
+              {activeRound.displayResults && <ResultsBoxUserView />}
             </>
           )}
+          {activeSession.done && (
+            <VStack>
+              <Box
+                width="100px"
+                minW="110px"
+                height="100px"
+                border="1px"
+                margin="5"
+                marginTop="50"
+                className="relative rounded-xl"
+              >
+                <VStack>
+                  <Image
+                    className="absolute border-4 -top-10"
+                    border="1px"
+                    boxSize="75px"
+                    src={`/${currCandidates}.png`}
+                    borderRadius="full"
+                    fit="cover"
+                    alt={`Bild på ${currCandidates}`}
+                  />
+                  <Heading size="md" className="pt-10">
+                    {currCandidates}
+                  </Heading>
+                </VStack>
+              </Box>
+              <Text className="mb-30">
+                The session is done! Winner is {currCandidates}!
+              </Text>
+            </VStack>
+          )}
 
-          {!activeRound && (
+          {!activeRound && !activeSession.done && (
             <VStack>
               <Text>No round active.</Text>
               <Text>Watch the show!</Text>
@@ -76,50 +105,3 @@ export function UserPanel() {
     </div>
   );
 }
-
-const ResultsBox = () => {
-  const { activeRound, voteCountInPercentage } = useSessionContext();
-
-  console.log(voteCountInPercentage);
-  const data = Object.entries(voteCountInPercentage)
-    .sort((a, b) => a[1] - b[1])
-    .map(([name, percent]) => {
-      return { name: name, value: percent };
-    });
-
-  console.log(data);
-
-  return (
-    <>
-      {activeRound && activeRound.displayResults && (
-        <>
-          <Heading size="md" className="text-center">
-            RESULTS
-          </Heading>
-          <PieChart width={400} height={400}>
-            <Pie
-              dataKey="value"
-              startAngle={180}
-              endAngle={0}
-              data={data}
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              label
-              animationDuration={2000}
-              animationEasing="ease-in-out"
-            />
-          </PieChart>
-          {Object.entries(voteCountInPercentage)
-            .sort((a, b) => b[1] - a[1])
-            .map(([candidate, voteCount]) => (
-              <Text key={uuidv4()} className="text-center">
-                {candidate}: {voteCount}%
-              </Text>
-            ))}
-        </>
-      )}
-    </>
-  );
-};

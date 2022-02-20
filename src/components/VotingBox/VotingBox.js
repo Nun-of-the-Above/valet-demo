@@ -15,37 +15,19 @@ import { v4 as uuidv4 } from "uuid";
 import { doc, setDoc } from "@firebase/firestore";
 import { db } from "../../firestore";
 import { Image } from "@chakra-ui/image";
+import { RoundTimer } from "../RoundTimer/RoundTimer";
 
 export const VotingBox = () => {
   const { activeRound, userVoteInActiveRound, currCandidates } =
     useSessionContext();
 
-  const [seconds, setSeconds] = useState(60);
   const [votingEnabled, setVotingEnabled] = useState(true);
-
-  useEffect(() => {
-    let interval = null;
-    if (activeRound.votingActive) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
-      }, 1000);
-    } else if (!activeRound.votingActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [activeRound]);
-
-  useEffect(() => {
-    if (seconds <= 0) {
-      setVotingEnabled(false);
-    }
-  }, [seconds]);
 
   return (
     <div className="h-full min-h-full">
       {votingEnabled && (
         <>
-          <Heading className="text-center">{seconds}</Heading>
+          <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
           {!userVoteInActiveRound ? (
             <Heading size="sm" className="text-center">
               Please cast your vote in Round # {activeRound.number}
