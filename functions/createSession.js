@@ -37,26 +37,21 @@ exports.createSession = functions.https.onCall(async (data, context) => {
     candidatesLeft: candidatesLeft,
   });
 
+  //Helper function to add round in firestore.
   async function createRound(sessionID, number) {
     const roundID = number + "-" + sessionID;
-    const voteCount = {
-      Alina: 0,
-      Isabelle: 0,
-      Filip: 0,
-      Simon: 0,
-    };
+    const candidatesInRound = ["Alina", "Isabelle", "Filip", "Simon"];
 
     //Add round to firestore.
     await db.collection("rounds").doc(roundID).set({
       roundID: roundID,
       parentSessionID: sessionID,
       number: number,
-      voteCount: voteCount,
+      candidatesInRound: candidatesInRound,
       roundActive: false,
       votingActive: false,
       done: false,
       displayResults: false,
-      timer: 10,
     });
   }
 

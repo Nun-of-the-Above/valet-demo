@@ -13,20 +13,20 @@ const db = admin.firestore();
 //   process.env.ORIGIN_URL = "https://valet-app-2ab35.web.app";
 // }
 
-const incrementVoteCount = require("./incrementVoteCount");
-exports.incrementVoteCount = incrementVoteCount.incrementVoteCount;
+// const incrementVoteCount = require("./incrementVoteCount");
+// exports.incrementVoteCount = incrementVoteCount.incrementVoteCount;
 
-const decrementVoteCount = require("./decrementVoteCount");
-exports.decrementVoteCount = decrementVoteCount.decrementVoteCount;
+// const decrementVoteCount = require("./decrementVoteCount");
+// exports.decrementVoteCount = decrementVoteCount.decrementVoteCount;
 
-const resetRound = require("./resetRound");
-exports.resetRound = resetRound.resetRound;
+// const resetRound = require("./resetRound");
+// exports.resetRound = resetRound.resetRound;
+
+// const calculateVotingResults = require("./calculateVotingResults");
+// exports.calculateVotingResults = calculateVotingResults.calculateVotingResults;
 
 const createSession = require("./createSession");
 exports.createSession = createSession.createSession;
-
-const calculateVotingResults = require("./calculateVotingResults");
-exports.calculateVotingResults = calculateVotingResults.calculateVotingResults;
 
 exports.createUserDocument = functions.auth.user().onCreate((user) => {
   db.collection("users")
