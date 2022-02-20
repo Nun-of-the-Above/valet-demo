@@ -24,6 +24,8 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
 
   const onSubmit = (data) => createSession(data);
 
+  // ? This could be made local and batched?
+  // Would get rid of all the cold starts of it.
   const createSession = httpsCallable(functions, "createSession");
 
   return (

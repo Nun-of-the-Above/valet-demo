@@ -10,6 +10,7 @@ export function UnauthenticatedApp() {
   const { activeSession, isLoaded } = useSessionContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [adminShow, setAdminShow] = useState(false);
 
   const [secretWord, setSecretWord] = useState("");
   const [error, setError] = useState(false);
@@ -49,38 +50,31 @@ export function UnauthenticatedApp() {
                 </Button>
               </Center>
             </form>
-            {error && secretWord !== "admin" && (
-              <Text>Wrong secret word. Try again.</Text>
-            )}
-            {error && secretWord === "admin" && (
-              <>
-                <Box className="absolute bottom-0">
-                  <Heading size="sm">Admin Login</Heading>
-                  <form onSubmit={(e) => handleLogin(e)}>
-                    <Input
-                      type="text"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <Input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-
-                    <Button type="submit">Login</Button>
-                  </form>
-                </Box>
-              </>
-            )}
+            {error && <Text>Wrong secret word. Try again.</Text>}
           </Container>
         ) : (
           <p>The session was retrieved but is not active.</p>
         )
       ) : (
-        <Container centerContent maxW="xl">
-          <Heading as="h3">Ingen förställning spelas just nu.</Heading>
-          <Text>Wait for the admin to active tonight's session.</Text>
+        <Container className="text-center">
+          <Heading size="md" as="h3">
+            Ingen förställning spelas just nu.
+          </Heading>
+          <Text className="mt-5">
+            Wait for admin to activate tonight's session.
+          </Text>
+        </Container>
+      )}
+      <Button
+        position="fixed"
+        bottom="0"
+        margin="30px"
+        onClick={() => setAdminShow(!adminShow)}
+      >
+        ADMIN
+      </Button>
+      {adminShow && (
+        <Container>
           <Box position="fixed" bottom="0" margin="30px">
             <Heading as="h3">Admin Login</Heading>
             <form onSubmit={(e) => handleLogin(e)}>
