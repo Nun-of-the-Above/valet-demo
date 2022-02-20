@@ -1,110 +1,119 @@
 import { collection, doc, writeBatch, updateDoc } from "@firebase/firestore";
-import { useSessionContext } from "../../context/session-context";
 import { db } from "../../firestore";
-import { v4 as uuidv4 } from "uuid";
 import { RoundBox } from "../RoundBox";
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/layout";
+import { Center, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
+import { useAdminContext } from "../../context/admin-context";
 
 export function SessionBox({ session }) {
   const sessionRef = doc(collection(db, "sessions"), session.sessionID);
-
-  const { isLoaded, rounds, votes } = useSessionContext();
+  const { rounds, votes } = useAdminContext();
 
   //Delete session and related rounds and votes.
+  //TODO: Explore if this can be moved out into a helper function.
   const deleteSession = async () => {
     try {
       const batch = writeBatch(db);
+      const roundsOwnedBySession = rounds.filter(
+        (r) => r.parentSessionID === session.sessionID
+      );
 
-      votes.forEach((vote) => {
-        const voteRef = doc(db, "votes", vote.voteID);
-        batch.delete(voteRef);
-        console.log(`Vote added to batch for delete. VoteID: ${vote.voteID}`);
-      });
-
-      rounds.forEach((round) => {
+      // Schedule all rounds for deletion.
+      roundsOwnedBySession.forEach((round) => {
         const roundRef = doc(db, "rounds", round.roundID);
         batch.delete(roundRef);
         console.log(
           `Round added to batch for delete. RoundID: ${round.roundID}`
         );
+
+        // Schedule votes of each round for deletion as well.
+        votes
+          .filter((v) => v.roundID === round.roundID)
+          .forEach((v) => {
+            const voteRef = doc(db, "votes", v.voteID);
+            batch.delete(voteRef);
+          });
       });
 
       batch.delete(sessionRef);
       await batch.commit();
-      console.log("Batch was successfully deleted in db.");
+      console.log(
+        "Batch of session/rounds/votes was successfully deleted in db."
+      );
     } catch (e) {
       console.error("Error deleting session, rounds and votes: ", e);
     }
   };
 
   return (
-    <Flex className="flex-col p-10 m-10" border="3px solid black">
-      <Heading as="h2" size="lg">
-        {new Date(session.showDate).toDateString()}, {session.stage},{" "}
-        {session.city}
-      </Heading>
-
-      <SessionInfoBox session={session} />
-
-      <Stack spacing="3" margin="3">
-        <Button
-          disabled={session.active}
-          onClick={() => {
-            updateDoc(sessionRef, { active: true });
-          }}
-        >
-          ACTIVATE SESSION
-        </Button>
-
-        <Button
-          disabled={session.done}
-          onClick={() => {
-            updateDoc(sessionRef, { done: true });
-          }}
-        >
-          SET SESSION TO DONE
-        </Button>
-        <Button
-          disabled={!session.active}
-          onClick={() => {
-            updateDoc(sessionRef, { active: false });
-          }}
-        >
-          DEACTIVATE SESSION
-        </Button>
-      </Stack>
-
-      {isLoaded && rounds ? (
-        <Center>
-          <HStack className="justify-between">
-            {rounds.map((round) => (
-              <RoundBox key={round.roundID} round={round} />
-            ))}
-          </HStack>
-        </Center>
+    <>
+      {!session ? (
+        <Heading>Loading session...</Heading>
       ) : (
-        <p>Rounds showed if session is active.</p>
-      )}
+        <Flex className="flex-col p-10 m-10" border="3px solid black">
+          <Heading as="h2" size="lg">
+            {new Date(session.showDate).toDateString()}, {session.stage},{" "}
+            {session.city}
+          </Heading>
 
-      <Button
-        colorScheme="red"
-        disabled={!session.active}
-        onClick={deleteSession}
-        width="full"
-        margin="3"
-      >
-        DELETE SESSION
-      </Button>
-    </Flex>
+          <SessionInfoBox session={session} />
+
+          <Stack spacing="3" margin="3">
+            <Button
+              disabled={session.active}
+              onClick={() => {
+                updateDoc(sessionRef, { active: true });
+              }}
+            >
+              ACTIVATE SESSION
+            </Button>
+
+            <Button
+              disabled={session.done}
+              onClick={() => {
+                updateDoc(sessionRef, { done: true });
+              }}
+            >
+              SET SESSION TO DONE
+            </Button>
+            <Button
+              disabled={!session.active}
+              onClick={() => {
+                updateDoc(sessionRef, { active: false });
+              }}
+            >
+              DEACTIVATE SESSION
+            </Button>
+          </Stack>
+
+          <Center>
+            <HStack className="justify-between">
+              {rounds &&
+                rounds
+                  .filter(
+                    (round) => round.parentSessionID === session.sessionID
+                  )
+                  .map((round) => (
+                    <RoundBox
+                      key={round.roundID}
+                      round={round}
+                      disabled={!session.active}
+                    />
+                  ))}
+            </HStack>
+          </Center>
+
+          <Button
+            colorScheme="red"
+            onClick={deleteSession}
+            width="full"
+            margin="3"
+          >
+            DELETE SESSION
+          </Button>
+        </Flex>
+      )}
+    </>
   );
 }
 

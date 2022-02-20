@@ -12,8 +12,7 @@ const SessionContext = createContext({
 const SessionProvider = ({ children }) => {
   const { user } = useAuth();
 
-  //Get all data
-  // TODO: Swap this for a better hook.
+  //Get all dat
   const { activeSession, rounds, votes, allSessions } = useSessionData();
 
   const isLoaded = activeSession != null && rounds != null && votes != null;
@@ -34,25 +33,6 @@ const SessionProvider = ({ children }) => {
 
   const currCandidates = activeSession ? activeSession.candidatesLeft : null;
 
-  function calcultePercentage(voteCount) {
-    const voteCountArray = Object.entries(voteCount);
-    const totalVoteCount = voteCountArray.reduce((acc, [c, v]) => {
-      return acc + v;
-    }, 0);
-    const percentagePerVote = 100 / totalVoteCount;
-
-    const updatedVoteCountArray = voteCountArray.map(([c, v]) => [
-      c,
-      Math.floor(v * percentagePerVote * 100) / 100,
-    ]);
-
-    return Object.fromEntries(updatedVoteCountArray);
-  }
-
-  const voteCountInPercentage = activeRound
-    ? calcultePercentage(activeRound.voteCount)
-    : null;
-
   const value = {
     isLoaded,
     allSessions,
@@ -63,7 +43,6 @@ const SessionProvider = ({ children }) => {
     votesInActiveRound,
     userVoteInActiveRound,
     currCandidates,
-    voteCountInPercentage,
   };
 
   return (
