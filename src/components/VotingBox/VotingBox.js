@@ -16,6 +16,7 @@ import { doc, setDoc } from "@firebase/firestore";
 import { db } from "../../firestore";
 import { Image } from "@chakra-ui/image";
 import { RoundTimer } from "../RoundTimer/RoundTimer";
+import { Skeleton } from "@chakra-ui/react";
 
 export const VotingBox = () => {
   const { activeRound, userVoteInActiveRound, currCandidates } =
@@ -70,6 +71,7 @@ export const VotingBox = () => {
 const CandidateButton = ({ candidate }) => {
   const { user } = useAuth();
   const { activeRound, userVoteInActiveRound } = useSessionContext();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // ? Should this have error-handling?
   const addVote = async (candidate) => {
@@ -94,20 +96,23 @@ const CandidateButton = ({ candidate }) => {
       className="place-self-center"
       disabled={!activeRound.roundActive || userVoteInActiveRound}
     >
-      <VStack>
-        <Image
-          className="absolute border-4 -top-10"
-          border="1px"
-          boxSize="75px"
-          src={`/${candidate}.png`}
-          borderRadius="full"
-          fit="cover"
-          alt={`Bild på ${candidate}`}
-        />
-        <Heading size="md" className="pt-5">
-          {candidate}
-        </Heading>
-      </VStack>
+      <Skeleton isLoaded={imageLoaded}>
+        <VStack>
+          <Image
+            onLoad={() => setImageLoaded(true)}
+            className="absolute border-4 -top-10"
+            border="1px"
+            boxSize="75px"
+            src={`/${candidate}.png`}
+            borderRadius="full"
+            fit="cover"
+            alt={`Bild på ${candidate}`}
+          />
+          <Heading size="md" className="pt-5">
+            {candidate}
+          </Heading>
+        </VStack>
+      </Skeleton>
     </Button>
   );
 };

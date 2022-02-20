@@ -1,11 +1,12 @@
 import "./App.css";
 import { SiteWrapper } from "./styles";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { SessionProvider } from "./context/session-context";
+import { SessionProvider, useSessionContext } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, Heading } from "@chakra-ui/layout";
+import { Container, Divider, Heading, Center } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/react";
 
 function Home() {
   const { user } = useAuth();
@@ -19,9 +20,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>
+            <Header>VALET</Header>
             <LoadingGateAuth>
               <div className="w-full h-full">
-                <Header>VALET</Header>
                 <Home />
               </div>
             </LoadingGateAuth>
@@ -34,8 +35,21 @@ function App() {
 
 const LoadingGateAuth = ({ children }) => {
   const { isLoadedAuth } = useAuth();
+  const { isLoaded } = useSessionContext();
 
-  return isLoadedAuth ? <>{children}</> : <div>Loading the auth state...</div>;
+  return isLoadedAuth && isLoaded ? (
+    <>{children}</>
+  ) : (
+    <Center>
+      <Spinner
+        thickness="5px"
+        speed="2s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+      />
+    </Center>
+  );
 };
 
 const Header = () => {
