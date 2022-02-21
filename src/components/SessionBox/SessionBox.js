@@ -1,9 +1,20 @@
 import { collection, doc, writeBatch, updateDoc } from "@firebase/firestore";
 import { db } from "../../firestore";
 import { RoundBox } from "../RoundBox";
-import { Center, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/layout";
+import {
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  VStack,
+  GridItem,
+  Grid,
+  Text,
+  Box,
+} from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useAdminContext } from "../../context/admin-context";
+import { Spinner } from "@chakra-ui/react";
 
 export function SessionBox({ session }) {
   const sessionRef = doc(collection(db, "sessions"), session.sessionID);
@@ -48,61 +59,65 @@ export function SessionBox({ session }) {
   return (
     <>
       {!session ? (
-        <Heading>Loading session...</Heading>
+        <Spinner />
       ) : (
-        <Flex className="flex-col p-10 m-10" border="3px solid black">
-          <Heading as="h2" size="lg">
+        <Flex
+          className="flex-col p-10 m-10 rounded-md"
+          border="1px solid black"
+        >
+          <Heading as="h2" size="lg" className="mb-5 text-center">
             {new Date(session.showDate).toDateString()}, {session.stage},{" "}
             {session.city}
           </Heading>
 
-          <SessionInfoBox session={session} />
+          <Grid className="m-10" gridTemplateColumns={"2fr 1fr"}>
+            <GridItem>
+              <Button
+                disabled={session.active}
+                onClick={() => {
+                  updateDoc(sessionRef, { active: true });
+                }}
+              >
+                ACTIVATE SESSION
+              </Button>
 
-          <Stack spacing="3" margin="3">
-            <Button
-              disabled={session.active}
-              onClick={() => {
-                updateDoc(sessionRef, { active: true });
-              }}
-            >
-              ACTIVATE SESSION
-            </Button>
+              <Button
+                disabled={session.done}
+                onClick={() => {
+                  updateDoc(sessionRef, { done: true });
+                }}
+                className="m-5"
+              >
+                SET TO DONE
+              </Button>
+              <Button
+                disabled={!session.active}
+                onClick={() => {
+                  updateDoc(sessionRef, { active: false });
+                }}
+              >
+                DEACTIVATE SESSION
+              </Button>
+            </GridItem>
+            <GridItem>
+              <SessionInfoBox session={session} />
+            </GridItem>
+          </Grid>
 
-            <Button
-              disabled={session.done}
-              onClick={() => {
-                updateDoc(sessionRef, { done: true });
-              }}
-            >
-              SET SESSION TO DONE
-            </Button>
-            <Button
-              disabled={!session.active}
-              onClick={() => {
-                updateDoc(sessionRef, { active: false });
-              }}
-            >
-              DEACTIVATE SESSION
-            </Button>
-          </Stack>
+          <HStack className="justify-between">
+            {rounds &&
+              rounds
+                .filter((round) => round.parentSessionID === session.sessionID)
+                .map((round) => (
+                  <RoundBox
+                    key={round.roundID}
+                    round={round}
+                    disabled={!session.active}
+                  />
+                ))}
+          </HStack>
 
-          <Center>
-            <HStack className="justify-between">
-              {rounds &&
-                rounds
-                  .filter(
-                    (round) => round.parentSessionID === session.sessionID
-                  )
-                  .map((round) => (
-                    <RoundBox
-                      key={round.roundID}
-                      round={round}
-                      disabled={!session.active}
-                    />
-                  ))}
-            </HStack>
-          </Center>
-
+          {/* TODO: Add verification here for deletion. */}
           <Button
             colorScheme="red"
             onClick={deleteSession}
@@ -119,14 +134,29 @@ export function SessionBox({ session }) {
 
 const SessionInfoBox = ({ session }) => {
   return (
-    <Stack className="p-5 border-8">
-      <Text>SessionID: {session.sessionID}</Text>
-      <Text>Active: {session.active.toString()}</Text>
-      <Text>ShowDate: {new Date(session.showDate).toLocaleString()}</Text>
-      <Text>Stage: {session.stage}</Text>
-      <Text>City: {session.city}</Text>
-      <Text>Done: {session.done.toString()}</Text>
-      <Text>SecretWord: {session.secretWord}</Text>
-    </Stack>
+    <Box className="p-5 border-2 border-black rounded-lg">
+      <Text>
+        <span className="font-bold">SessionID:</span> {session.sessionID}
+      </Text>
+      <Text>
+        <span className="font-bold">Active:</span> {session.active.toString()}
+      </Text>
+      <Text>
+        <span className="font-bold">ShowDate:</span>
+        {new Date(session.showDate).toLocaleString()}
+      </Text>
+      <Text>
+        <span className="font-bold">Stage:</span> {session.stage}
+      </Text>
+      <Text>
+        <span className="font-bold">City:</span> {session.city}
+      </Text>
+      <Text>
+        <span className="font-bold">Done:</span> {session.done.toString()}
+      </Text>
+      <Text>
+        <span className="font-bold">SecretWord:</span> {session.secretWord}
+      </Text>
+    </Box>
   );
 };

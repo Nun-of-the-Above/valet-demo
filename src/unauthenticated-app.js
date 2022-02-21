@@ -22,7 +22,7 @@ export function UnauthenticatedApp() {
 
   const handleRegisterRandom = (e) => {
     e.preventDefault();
-    if (secretWord === activeSession.secretWord) {
+    if (secretWord.toLowerCase() === activeSession.secretWord) {
       registerWithRandomEmail();
     } else {
       setError(true);
@@ -75,7 +75,7 @@ export function UnauthenticatedApp() {
       </Button>
       {adminShow && (
         <Container>
-          <Box position="fixed" bottom="0" margin="30px">
+          <Box position="fixed" bottom="50" margin="30px">
             <Heading as="h3">Admin Login</Heading>
             <form onSubmit={(e) => handleLogin(e)}>
               <Input

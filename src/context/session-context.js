@@ -12,7 +12,7 @@ const SessionContext = createContext({
 const SessionProvider = ({ children }) => {
   const { user } = useAuth();
 
-  //Get all dat
+  //Get all data
   const { activeSession, rounds, votes, allSessions } = useSessionData();
 
   const isLoaded = activeSession != null && rounds != null && votes != null;

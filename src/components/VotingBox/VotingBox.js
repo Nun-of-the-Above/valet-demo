@@ -1,22 +1,9 @@
-import { Button } from "@chakra-ui/button";
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-  VStack,
-} from "@chakra-ui/layout";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../context/auth-context";
+import { Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/layout";
+import { toast, useToast } from "@chakra-ui/react";
+import { useState } from "react";
 import { useSessionContext } from "../../context/session-context";
-import { v4 as uuidv4 } from "uuid";
-import { doc, setDoc } from "@firebase/firestore";
-import { db } from "../../firestore";
-import { Image } from "@chakra-ui/image";
+import { CandidateVotingButton } from "../CandidateVotingButton/CandidateVotingButton";
 import { RoundTimer } from "../RoundTimer/RoundTimer";
-import { Skeleton } from "@chakra-ui/react";
 
 export const VotingBox = () => {
   const { activeRound, userVoteInActiveRound, currCandidates } =
@@ -25,94 +12,29 @@ export const VotingBox = () => {
   const [votingEnabled, setVotingEnabled] = useState(true);
 
   return (
-    <div className="h-full min-h-full">
-      {votingEnabled && (
-        <>
+    <>
+      {votingEnabled ? (
+        <Grid className="h-full" gridTemplateRows={"1fr 2fr"}>
           <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
-          {!userVoteInActiveRound ? (
-            <Heading size="sm" className="text-center">
-              Please cast your vote in Round # {activeRound.number}
-            </Heading>
-          ) : (
-            <VStack>
-              <Text>
-                You have voted for {userVoteInActiveRound.candidate} in Round #
-                {activeRound.number}
-              </Text>
-              <Text>Wait for the voting to finish.</Text>
-            </VStack>
-          )}
           <Grid
             gridTemplateColumns="1fr 1fr"
-            className="relative bottom-0 mt-10 place-items-center"
+            className="relative h-full mx-10 mt-10 place-items-center"
           >
             {currCandidates.map((candidate) => {
               return (
                 <GridItem key={candidate}>
-                  <CandidateButton candidate={candidate}>
-                    {candidate}
-                  </CandidateButton>
+                  <CandidateVotingButton candidate={candidate} />
                 </GridItem>
               );
             })}
           </Grid>
-        </>
-      )}
-      {!votingEnabled && (
+        </Grid>
+      ) : (
         <VStack>
-          <Text>Voting is done.</Text>
+          <Heading>Voting is done.</Heading>
           <Text>Wait for results.</Text>
         </VStack>
       )}
-    </div>
-  );
-};
-
-const CandidateButton = ({ candidate }) => {
-  const { user } = useAuth();
-  const { activeRound, userVoteInActiveRound } = useSessionContext();
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  // ? Should this have error-handling?
-  const addVote = async (candidate) => {
-    const voteID = uuidv4();
-    await setDoc(doc(db, "votes", voteID), {
-      voteID: voteID,
-      candidate: candidate,
-      userEmail: user.email,
-      roundID: activeRound.roundID,
-    });
-  };
-
-  return (
-    <Button
-      onClick={() => addVote(candidate)}
-      width="100px"
-      minW="110px"
-      height="100px"
-      border="1px"
-      margin="5"
-      marginTop="10"
-      className="place-self-center"
-      disabled={!activeRound.roundActive || userVoteInActiveRound}
-    >
-      <Skeleton isLoaded={imageLoaded}>
-        <VStack>
-          <Image
-            onLoad={() => setImageLoaded(true)}
-            className="absolute border-4 -top-10"
-            border="1px"
-            boxSize="75px"
-            src={`/${candidate}.png`}
-            borderRadius="full"
-            fit="cover"
-            alt={`Bild på ${candidate}`}
-          />
-          <Heading size="md" className="pt-5">
-            {candidate}
-          </Heading>
-        </VStack>
-      </Skeleton>
-    </Button>
+    </>
   );
 };

@@ -56,7 +56,7 @@ export function useSessionData() {
     );
 
     const unsubRounds = onSnapshot(roundsQuery, (querySnapshot) => {
-      if (querySnapshot.size === 3) {
+      if (querySnapshot.size >= 3) {
         const newRounds = querySnapshot.docs
           .map((doc) => doc.data())
           .sort((a, b) => a.number - b.number);
@@ -68,7 +68,6 @@ export function useSessionData() {
     });
 
     return () => {
-      // console.log("unsubbed from old rounds...");
       unsubRounds();
     };
   }, [activeSession]);
@@ -84,14 +83,12 @@ export function useSessionData() {
       )
     );
 
-    // console.log("Creating new votes sub");
     const unsubVotes = onSnapshot(votesQuery, (querySnapshot) => {
       // Here we know that all data is gathered (session, rounds)
       setVotes(querySnapshot.docs.map((doc) => doc.data()));
     });
 
     return () => {
-      // console.log("unsubbing from old votes sub");
       unsubVotes();
     };
   }, [rounds]);

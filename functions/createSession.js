@@ -55,6 +55,7 @@ exports.createSession = functions.https.onCall(async (data, context) => {
     });
   }
 
+  createRound(sessionID, 0);
   createRound(sessionID, 1);
   createRound(sessionID, 2);
   createRound(sessionID, 3);

@@ -1,7 +1,10 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import { Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
+import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
 import { useSessionContext } from "../../context/session-context";
+import { CandidateCard } from "../CandidateCard";
+import { Grid, GridItem } from "@chakra-ui/react";
 
 export const ResultsBoxUserView = () => {
   const { activeRound, votesInActiveRound, currCandidates } =
@@ -40,18 +43,14 @@ export const ResultsBoxUserView = () => {
     setData(percentageData);
   }, [voteCount]);
 
-  // TODO: Put these in a TOOLKIT for the candidates.
-  // Ex. {name: 'Alina', image: 'url', color: '#00C49F'}
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
   return (
     <>
       {activeRound && activeRound.displayResults && (
         <>
-          <Heading className="text-center" size="md">
-            RESULTS
-          </Heading>
-          <VStack width={"100%"}>
+          <VStack width={"100%"} height="100%">
+            <Heading className="text-center" size="md">
+              RESULTAT
+            </Heading>
             <PieChart width={300} height={150} className="self-center mb-5">
               <Pie
                 nameKey="name"
@@ -63,7 +62,7 @@ export const ResultsBoxUserView = () => {
                 cy="100%"
                 outerRadius={70}
                 fill="#8884d8"
-                animationDuration={1000}
+                animationDuration={2500}
                 animationEasing="ease-in-out"
                 label={(entry) => `${entry.name}`}
                 onAnimationEnd={() => setAnimationDone(true)}
@@ -72,24 +71,50 @@ export const ResultsBoxUserView = () => {
                   data.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={CANDIDATES_TOOLKIT[entry.name].color}
                     />
                   ))}
               </Pie>
-              ;
             </PieChart>
 
-            {voteCount && data && animationDone && (
-              <VStack border="1px" padding="3" className="rounded-lg">
+            {data ? (
+              <Grid
+                padding="3"
+                className="rounded-lg"
+                templateColumns="1fr 1fr"
+              >
                 {data
                   .map((obj) => [obj.name, obj.value])
                   .sort((a, b) => b[1] - a[1])
-                  .map(([candidate, numOfVotes]) => (
-                    <Text key={candidate}>
-                      {candidate}: {numOfVotes}%
-                    </Text>
+                  .map(([name, percentageOfVotes]) => (
+                    <GridItem key={name} className="m-3">
+                      <CandidateCard
+                        name={name}
+                        text={`${percentageOfVotes}%`}
+                        isLoaded={animationDone}
+                      />
+                    </GridItem>
                   ))}
-              </VStack>
+              </Grid>
+            ) : (
+              <>
+                {data && (
+                  <Grid
+                    padding="3"
+                    className="rounded-lg"
+                    templateColumns="1fr 1fr"
+                  >
+                    {data
+                      .map((obj) => [obj.name, obj.value])
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([name, percentageOfVotes]) => (
+                        <GridItem key={name}>
+                          <Skeleton height="50px" width="50px" />
+                        </GridItem>
+                      ))}
+                  </Grid>
+                )}
+              </>
             )}
           </VStack>
         </>

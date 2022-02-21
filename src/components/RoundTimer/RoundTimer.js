@@ -51,7 +51,7 @@ export const RoundTimer = ({ round, setVotingEnabled }) => {
       {round.done ? (
         <Heading>Voting is done.</Heading>
       ) : (
-        <Heading>{seconds}</Heading>
+        <Heading size="4xl">{seconds}</Heading>
       )}
     </Center>
   );

@@ -5,7 +5,7 @@ import { SessionProvider, useSessionContext } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, Heading, Center } from "@chakra-ui/layout";
+import { Container, Divider, Heading, VStack } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/react";
 
 function Home() {
@@ -35,20 +35,15 @@ function App() {
 
 const LoadingGateAuth = ({ children }) => {
   const { isLoadedAuth } = useAuth();
-  const { isLoaded } = useSessionContext();
+  // const { isLoaded } = useAdminContext();
 
-  return isLoadedAuth && isLoaded ? (
+  return isLoadedAuth ? (
     <>{children}</>
   ) : (
-    <Center>
-      <Spinner
-        thickness="5px"
-        speed="2s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    </Center>
+    <VStack>
+      <Spinner />
+      <Heading size="sm">Loading auth...</Heading>
+    </VStack>
   );
 };
 

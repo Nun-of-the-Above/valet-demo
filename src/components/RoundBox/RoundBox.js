@@ -51,9 +51,8 @@ export function RoundBox({ round, disabled }) {
 
   return (
     <Box
-      border={`4px solid ${round.roundActive ? "red" : "black"}`}
-      padding="5"
-      className="self-start"
+      className="self-start p-5 rounded-3xl"
+      border={`1px solid ${round.roundActive ? "red" : "black"}`}
     >
       <VStack>
         <Heading size="md">ROUND #{round.number}</Heading>
@@ -71,7 +70,9 @@ export function RoundBox({ round, disabled }) {
             disabled={!round.roundActive || !round.done}
             onClick={() => {
               updateDoc(roundRef, { roundActive: false });
-              updateCurrentCandidates(round, voteCount, rounds);
+              if (round.number !== 0) {
+                updateCurrentCandidates(round, voteCount, rounds);
+              }
             }}
           >
             CLOSE ROUND
@@ -157,10 +158,10 @@ const ResultsBoxAdmin = ({ voteCount }) => {
       </Heading>
       <Grid
         templateColumns="1fr 1fr"
-        border="4px"
+        border="1px"
         padding="3"
         width="full"
-        className="place-content-evenly"
+        className="rounded-lg place-content-evenly"
       >
         {voteCount
           .sort((a, b) => a[0] - b[0])
