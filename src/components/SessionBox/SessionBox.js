@@ -1,12 +1,11 @@
-import { collection, doc, writeBatch, updateDoc } from "@firebase/firestore";
+import { collection, doc, updateDoc } from "@firebase/firestore";
 import { db } from "../../firestore";
 import { RoundBox } from "../RoundBox";
+import { DeleteSessionButton } from "../DeleteSessionButton";
 import {
-  Center,
   Flex,
   Heading,
   HStack,
-  VStack,
   GridItem,
   Grid,
   Text,
@@ -17,44 +16,7 @@ import { useAdminContext } from "../../context/admin-context";
 import { Spinner } from "@chakra-ui/react";
 
 export function SessionBox({ session }) {
-  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
-  const { rounds, votes } = useAdminContext();
-
-  //Delete session and related rounds and votes.
-  //TODO: Explore if this can be moved out into a helper function.
-  const deleteSession = async () => {
-    try {
-      const batch = writeBatch(db);
-      const roundsOwnedBySession = rounds.filter(
-        (r) => r.parentSessionID === session.sessionID
-      );
-
-      // Schedule all rounds for deletion.
-      roundsOwnedBySession.forEach((round) => {
-        const roundRef = doc(db, "rounds", round.roundID);
-        batch.delete(roundRef);
-        console.log(
-          `Round added to batch for delete. RoundID: ${round.roundID}`
-        );
-
-        // Schedule votes of each round for deletion as well.
-        votes
-          .filter((v) => v.roundID === round.roundID)
-          .forEach((v) => {
-            const voteRef = doc(db, "votes", v.voteID);
-            batch.delete(voteRef);
-          });
-      });
-
-      batch.delete(sessionRef);
-      await batch.commit();
-      console.log(
-        "Batch of session/rounds/votes was successfully deleted in db."
-      );
-    } catch (e) {
-      console.error("Error deleting session, rounds and votes: ", e);
-    }
-  };
+  const { rounds } = useAdminContext();
 
   return (
     <>
@@ -72,32 +34,9 @@ export function SessionBox({ session }) {
 
           <Grid className="m-10" gridTemplateColumns={"2fr 1fr"}>
             <GridItem>
-              <Button
-                disabled={session.active}
-                onClick={() => {
-                  updateDoc(sessionRef, { active: true });
-                }}
-              >
-                ACTIVATE SESSION
-              </Button>
-
-              <Button
-                disabled={session.done}
-                onClick={() => {
-                  updateDoc(sessionRef, { done: true });
-                }}
-                className="m-5"
-              >
-                SET TO DONE
-              </Button>
-              <Button
-                disabled={!session.active}
-                onClick={() => {
-                  updateDoc(sessionRef, { active: false });
-                }}
-              >
-                DEACTIVATE SESSION
-              </Button>
+              <ActivateSessionButton session={session} />
+              <SetSessionDoneButton session={session} />
+              <DeactivateSessionButton session={session} />
             </GridItem>
             <GridItem>
               <SessionInfoBox session={session} />
@@ -117,15 +56,7 @@ export function SessionBox({ session }) {
                 ))}
           </HStack>
 
-          {/* TODO: Add verification here for deletion. */}
-          <Button
-            colorScheme="red"
-            onClick={deleteSession}
-            width="full"
-            margin="3"
-          >
-            DELETE SESSION
-          </Button>
+          <DeleteSessionButton session={session} />
         </Flex>
       )}
     </>
@@ -158,5 +89,51 @@ const SessionInfoBox = ({ session }) => {
         <span className="font-bold">SecretWord:</span> {session.secretWord}
       </Text>
     </Box>
+  );
+};
+
+const ActivateSessionButton = ({ session }) => {
+  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
+
+  return (
+    <Button
+      disabled={session.active}
+      onClick={() => {
+        updateDoc(sessionRef, { active: true });
+      }}
+    >
+      ACTIVATE SESSION
+    </Button>
+  );
+};
+
+const SetSessionDoneButton = ({ session }) => {
+  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
+
+  return (
+    <Button
+      disabled={session.done}
+      onClick={() => {
+        updateDoc(sessionRef, { done: true });
+      }}
+      className="m-5"
+    >
+      SET TO DONE
+    </Button>
+  );
+};
+
+const DeactivateSessionButton = ({ session }) => {
+  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
+
+  return (
+    <Button
+      disabled={!session.active}
+      onClick={() => {
+        updateDoc(sessionRef, { active: false });
+      }}
+    >
+      DEACTIVATE SESSION
+    </Button>
   );
 };
