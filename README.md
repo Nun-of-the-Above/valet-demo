@@ -20,12 +20,6 @@ In the project directory, you can run:
 
 Runs the app with Firebase emulator suit (firestore, Cloud Functions, Authentication, hosting).\
 Open [http://localhost:4000](http://localhost:4000) to view the emulator dashboard in your browser.
-Here you can 
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Learn More
 
