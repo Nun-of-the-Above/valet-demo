@@ -35,8 +35,11 @@ export function UnauthenticatedApp() {
         activeSession.active ? (
           <Container>
             <form onSubmit={(e) => handleRegisterRandom(e)}>
-              <Heading size="md">Enter the secret word: </Heading>
+              <Heading size="md" className="mb-5 text-center">
+                LÖSENORD
+              </Heading>
               <Input
+                className="mb-2"
                 type="text"
                 value={secretWord}
                 onChange={(e) => {
@@ -46,14 +49,14 @@ export function UnauthenticatedApp() {
               />
               <Center>
                 <Button type="submit" className="m-2">
-                  ENTER
+                  LOGGA IN
                 </Button>
               </Center>
             </form>
-            {error && <Text>Wrong secret word. Try again.</Text>}
+            {error && <Text>Fel lösenord. Försök igen.</Text>}
           </Container>
         ) : (
-          <p>The session was retrieved but is not active.</p>
+          <p>Föreställningen hämtades men är inte igång.</p>
         )
       ) : (
         <Container className="text-center">
@@ -61,7 +64,7 @@ export function UnauthenticatedApp() {
             Ingen förställning spelas just nu.
           </Heading>
           <Text className="mt-5">
-            Wait for admin to activate tonight's session.
+            Vänta på att föreställningen sätts igång.
           </Text>
         </Container>
       )}

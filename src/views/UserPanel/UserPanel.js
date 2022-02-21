@@ -36,15 +36,15 @@ export function UserPanel() {
           {activeRound && (
             <>
               {!activeRound && !activeSession.done && (
-                <p>No round active right now.</p>
+                <p>Ingen runda aktiv just nu.</p>
               )}
 
               {activeRound.roundActive &&
                 !activeRound.votingActive &&
                 !activeRound.done && (
                   <VStack>
-                    <Heading>A round is active.</Heading>
-                    <Text>Wait for the voting to start...</Text>
+                    <Heading>En runda är aktiv.</Heading>
+                    <Text>Vänta på att röstningen startar...</Text>
                   </VStack>
                 )}
 
@@ -52,8 +52,8 @@ export function UserPanel() {
 
               {activeRound.done && !activeRound.displayResults && (
                 <VStack>
-                  <Heading>Voting is done.</Heading>
-                  <Text>Wait for results.</Text>
+                  <Heading>Röstningen är klar.</Heading>
+                  <Text>Vänta på resultatet...</Text>
                 </VStack>
               )}
 
@@ -62,15 +62,15 @@ export function UserPanel() {
           )}
           {activeSession.done && (
             <VStack>
-              <Heading>The winner is...</Heading>
+              <Heading>Vinnaren är...</Heading>
               <CandidateCard name={currCandidates} isLoaded={winnerDelay} />
             </VStack>
           )}
 
           {!activeRound && !activeSession.done && (
             <VStack>
-              <Heading>No round active</Heading>
-              <Text>Watch the show!</Text>
+              <Heading size="md">Ingen röstning aktiv just nu.</Heading>
+              <Text>Titta på föreställningen.</Text>
             </VStack>
           )}
         </>

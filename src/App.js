@@ -1,11 +1,10 @@
 import "./App.css";
-import { SiteWrapper } from "./styles";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { SessionProvider, useSessionContext } from "./context/session-context";
+import { SessionProvider } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, Heading, VStack } from "@chakra-ui/layout";
+import { Container, Divider, Heading, VStack, Grid } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/react";
 
 function Home() {
@@ -16,7 +15,7 @@ function Home() {
 function App() {
   const queryClient = new QueryClient();
   return (
-    <SiteWrapper>
+    <Grid gridTemplateRows={"100px 1fr"} height="90vh">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>
@@ -29,20 +28,18 @@ function App() {
           </SessionProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </SiteWrapper>
+    </Grid>
   );
 }
 
 const LoadingGateAuth = ({ children }) => {
   const { isLoadedAuth } = useAuth();
-  // const { isLoaded } = useAdminContext();
 
   return isLoadedAuth ? (
     <>{children}</>
   ) : (
     <VStack>
       <Spinner />
-      <Heading size="sm">Loading auth...</Heading>
     </VStack>
   );
 };

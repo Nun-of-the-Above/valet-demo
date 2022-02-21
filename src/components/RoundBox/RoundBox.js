@@ -67,7 +67,7 @@ export function RoundBox({ round, disabled }) {
             OPEN ROUND
           </Button>
           <Button
-            disabled={!round.roundActive || !round.done}
+            disabled={!round.roundActive || !round.done || disabled}
             onClick={() => {
               updateDoc(roundRef, { roundActive: false });
               if (round.number !== 0) {

@@ -13,6 +13,7 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
   return (
     <VStack
       width="150px"
+      height="200px"
       className="p-5 text-center border-2 rounded-2xl"
       borderColor={candidate.color}
     >
@@ -21,7 +22,7 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
           className="border-2 border-black rounded-full "
           boxSize="80px"
           fit="cover"
-          src={candidate.image}
+          src={`/${candidate.name}.png`}
           alt={candidate.name}
         />
       </SkeletonCircle>

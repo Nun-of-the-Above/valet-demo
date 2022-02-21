@@ -1,9 +1,7 @@
 import {
-  Box,
   Button,
   Heading,
   Image,
-  Skeleton,
   SkeletonCircle,
   SkeletonText,
   useToast,
@@ -40,8 +38,8 @@ export const CandidateVotingButton = ({ candidate }) => {
       onClick={() => {
         addVote(candidate);
         toast({
-          title: "Vote submitted!",
-          description: `You have voted for ${candidate} in Round #${activeRound.number}`,
+          title: "Rösten har skickats iväg!",
+          description: `Du har röstat på ${candidate} i Runda #${activeRound.number}`,
           status: "success",
           duration: 9000,
           isClosable: true,
