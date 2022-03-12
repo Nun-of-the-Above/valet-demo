@@ -19,13 +19,13 @@ export function AdminPanel() {
       {isLoaded ? (
         <>
           <Center>
-            <Heading>ADMIN VIEW</Heading>
+            <Heading>ADMIN DASHBOARD</Heading>
           </Center>
           <HStack margin="3" spacing="3">
             <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-              Create new session
+              Skapa ny föreställning
             </Button>
-            <Button onClick={logout}>Admin log out</Button>
+            <Button onClick={logout}>Logga ut</Button>
           </HStack>
           <CreateSessionForm
             isOpen={isOpen}
@@ -36,7 +36,7 @@ export function AdminPanel() {
           />
           <Center>
             <Heading padding="3" size="lg">
-              SESSIONS
+              Föreställningar
             </Heading>
           </Center>
           {sessions ? (
@@ -44,11 +44,11 @@ export function AdminPanel() {
               <SessionBox key={session.sessionID} session={session} />
             ))
           ) : (
-            <p>There are no sessions.</p>
+            <p>Det finns inga föreställningar.</p>
           )}
         </>
       ) : (
-        <Heading>Loading admin view...</Heading>
+        <Heading>Laddar admin dashboard...</Heading>
       )}
     </>
   );

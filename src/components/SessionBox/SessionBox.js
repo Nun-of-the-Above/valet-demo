@@ -10,10 +10,20 @@ import {
   Grid,
   Text,
   Box,
+  VStack,
 } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useAdminContext } from "../../context/admin-context";
-import { Spinner } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Spinner,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
 
 export function SessionBox({ session }) {
   const { rounds } = useAdminContext();
@@ -34,9 +44,11 @@ export function SessionBox({ session }) {
 
           <Grid className="m-10" gridTemplateColumns={"2fr 1fr"}>
             <GridItem>
-              <ActivateSessionButton session={session} />
-              <SetSessionDoneButton session={session} />
-              <DeactivateSessionButton session={session} />
+              <VStack spacing={4}>
+                <ActivateSessionButton session={session} />
+                <DeactivateSessionButton session={session} />
+                {/* <SetSessionDoneButton session={session} /> */}
+              </VStack>
             </GridItem>
             <GridItem>
               <SessionInfoBox session={session} />
@@ -66,27 +78,29 @@ export function SessionBox({ session }) {
 const SessionInfoBox = ({ session }) => {
   return (
     <Box className="p-5 border-2 border-black rounded-lg">
-      <Text>
+      {/* <Text>
         <span className="font-bold">SessionID:</span> {session.sessionID}
+      </Text> */}
+      <Text>
+        <span className="font-bold">Status:</span>{" "}
+        {session.active ? "Öppen" : "Stängd"}
       </Text>
       <Text>
-        <span className="font-bold">Active:</span> {session.active.toString()}
-      </Text>
-      <Text>
-        <span className="font-bold">ShowDate:</span>
+        <span className="font-bold">Speldatum:</span>
         {new Date(session.showDate).toLocaleString()}
       </Text>
       <Text>
-        <span className="font-bold">Stage:</span> {session.stage}
+        <span className="font-bold">Scen:</span> {session.stage}
       </Text>
       <Text>
-        <span className="font-bold">City:</span> {session.city}
+        <span className="font-bold">Stad:</span> {session.city}
       </Text>
       <Text>
-        <span className="font-bold">Done:</span> {session.done.toString()}
+        <span className="font-bold">Genomförd:</span>{" "}
+        {session.done ? "Ja" : "Nej"}
       </Text>
       <Text>
-        <span className="font-bold">SecretWord:</span> {session.secretWord}
+        <span className="font-bold">Hemligt ord:</span> {session.secretWord}
       </Text>
     </Box>
   );
@@ -97,12 +111,13 @@ const ActivateSessionButton = ({ session }) => {
 
   return (
     <Button
+      colorScheme={"green"}
       disabled={session.active}
       onClick={() => {
         updateDoc(sessionRef, { active: true });
       }}
     >
-      ACTIVATE SESSION
+      ÖPPNA FÖRESTÄLLNING
     </Button>
   );
 };
@@ -118,7 +133,7 @@ const SetSessionDoneButton = ({ session }) => {
       }}
       className="m-5"
     >
-      SET TO DONE
+      SÄTT FÖRESTÄLLNING TILL KLAR
     </Button>
   );
 };
@@ -126,14 +141,55 @@ const SetSessionDoneButton = ({ session }) => {
 const DeactivateSessionButton = ({ session }) => {
   const sessionRef = doc(collection(db, "sessions"), session.sessionID);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = useRef();
+
   return (
-    <Button
-      disabled={!session.active}
-      onClick={() => {
-        updateDoc(sessionRef, { active: false });
-      }}
-    >
-      DEACTIVATE SESSION
-    </Button>
+    <div className="m-5">
+      <Button
+        colorScheme="red"
+        disabled={!session.active}
+        onClick={() => setIsOpen(true)}
+      >
+        Stäng föreställning
+      </Button>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Är du säker?
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Alla användare kommer loggas ut. Föreställning sätts till
+              "Genomförd".
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Avbryt
+              </Button>
+              <Button
+                marginLeft="3"
+                colorScheme={"red"}
+                disabled={!session.active}
+                onClick={() => {
+                  onClose();
+                  updateDoc(sessionRef, { active: false, done: true });
+                }}
+              >
+                STÄNG FÖRESTÄLLNING
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </div>
   );
 };

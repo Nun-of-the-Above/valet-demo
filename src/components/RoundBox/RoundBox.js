@@ -6,14 +6,13 @@ import {
   Heading,
   HStack,
   VStack,
+  Text,
 } from "@chakra-ui/layout";
 import { collection, doc, updateDoc } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAdminContext } from "../../context/admin-context";
 import { db } from "../../firestore";
 import { RoundTimer } from "../RoundTimer/RoundTimer";
-import { TempAdminFastVoting } from "../TempAdminFastVoting";
-import { resetRound } from "../../helpers/resetRound";
 import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers";
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
 
@@ -56,83 +55,85 @@ export function RoundBox({ round, disabled }) {
     >
       <VStack>
         <Heading size="md">ROUND #{round.number}</Heading>
-        {round.done && !round.roundActive && <p>ROUND COMPLETED</p>}
-        <HStack>
+        {round.done && !round.roundActive && <p>RUNDA KLAR</p>}
+
+        {!round.roundActive && (
           <Button
+            width="full"
+            colorScheme="green"
             disabled={round.roundActive || round.done || disabled}
             onClick={() => {
               updateDoc(roundRef, { roundActive: true });
             }}
           >
-            OPEN ROUND
+            ÖPPNA RUNDA
           </Button>
-          <Button
-            disabled={!round.roundActive || !round.done || disabled}
-            onClick={() => {
-              updateDoc(roundRef, { roundActive: false });
-              if (round.number !== 0) {
-                updateCurrentCandidates(round, voteCount, rounds);
-              }
-            }}
-          >
-            CLOSE ROUND
-          </Button>
-        </HStack>
+        )}
 
         {round.roundActive && (
           <>
-            <HStack padding="3">
-              <Button
-                disabled={round.votingActive || round.done || disabled}
-                onClick={() => {
-                  updateDoc(roundRef, { votingActive: true });
-                }}
-              >
-                START VOTING
-              </Button>
-
-              <Button
-                disabled={!round.votingActive}
-                onClick={() => {
-                  updateDoc(roundRef, { votingActive: false, done: true });
-                  correctIfDuplicateLosers(
-                    round,
-                    voteCount,
-                    session.candidatesLeft,
-                    votesInActiveRound
-                  );
-                }}
-              >
-                STOP VOTING
-              </Button>
-            </HStack>
+            <Button
+              colorScheme="green"
+              width="full"
+              disabled={round.votingActive || round.done || disabled}
+              onClick={() => {
+                updateDoc(roundRef, { votingActive: true });
+              }}
+            >
+              STARTA RÖSTNING
+            </Button>
 
             <RoundTimer round={round} />
 
-            <HStack padding="3">
-              <Button
-                disabled={round.displayResults || !round.done}
-                onClick={() => {
-                  updateDoc(roundRef, { displayResults: true });
-                }}
-              >
-                SHOW RESULTS
-              </Button>
+            <Button
+              colorScheme="red"
+              width="full"
+              disabled={!round.votingActive}
+              onClick={() => {
+                updateDoc(roundRef, { votingActive: false, done: true });
+                correctIfDuplicateLosers(
+                  round,
+                  voteCount,
+                  session.candidatesLeft,
+                  votesInActiveRound
+                );
+              }}
+            >
+              AVSLUTA RÖSTNING
+            </Button>
 
-              <Button
-                disabled={!round.displayResults}
-                onClick={() => {
-                  updateDoc(roundRef, { displayResults: false });
-                }}
-              >
-                HIDE RESULTS
-              </Button>
-            </HStack>
+            <Button
+              colorScheme="green"
+              disabled={round.displayResults || !round.done}
+              onClick={() => {
+                updateDoc(roundRef, { displayResults: true });
+              }}
+            >
+              VISA RESULTAT FÖR PUBLIKEN
+            </Button>
+            <Button
+              width="full"
+              colorScheme={"red"}
+              disabled={
+                !round.roundActive ||
+                !round.done ||
+                disabled ||
+                !round.displayResults
+              }
+              onClick={() => {
+                updateDoc(roundRef, { roundActive: false });
+                if (round.number !== 0) {
+                  updateCurrentCandidates(round, voteCount, rounds);
+                }
+              }}
+            >
+              STÄNG RUNDA
+            </Button>
           </>
         )}
 
         {voteCount && <ResultsBoxAdmin voteCount={voteCount} />}
-        <Button
+        {/* <Button
           width="full"
           colorScheme="red"
           disabled={round.roundActive || !round.done}
@@ -140,11 +141,11 @@ export function RoundBox({ round, disabled }) {
             resetRound(round, voteCount, votesInActiveRound);
           }}
         >
-          RESET ROUND
-        </Button>
+          NOLLSTÄLL RUNDA
+        </Button> */}
 
         {/** TEMPORARY FAST VOTING */}
-        {round.votingActive && <TempAdminFastVoting round={round} />}
+        {/* {round.votingActive && <TempAdminFastVoting round={round} />} */}
       </VStack>
     </Box>
   );
@@ -154,7 +155,7 @@ const ResultsBoxAdmin = ({ voteCount }) => {
   return (
     <>
       <Heading className="text-center" size="md">
-        RESULTS
+        RESULTAT
       </Heading>
       <Grid
         templateColumns="1fr 1fr"
@@ -167,7 +168,9 @@ const ResultsBoxAdmin = ({ voteCount }) => {
           .sort((a, b) => a[0] - b[0])
           .map(([candidate, numOfVotes]) => (
             <GridItem key={candidate}>
-              {candidate}: {numOfVotes}
+              <Text className="m-1 whitespace-nowrap">
+                {candidate}: {numOfVotes}
+              </Text>
             </GridItem>
           ))}
       </Grid>

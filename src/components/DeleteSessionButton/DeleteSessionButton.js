@@ -20,7 +20,7 @@ export const DeleteSessionButton = ({ session }) => {
   return (
     <div className="m-5">
       <Button colorScheme="red" onClick={() => setIsOpen(true)}>
-        Delete Session
+        Radera föreställning
       </Button>
 
       <AlertDialog
@@ -35,12 +35,12 @@ export const DeleteSessionButton = ({ session }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? The session will be forever lost.
+              Är du säker? Föreställningen försvinner för alltid.
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                Cancel
+                Avbryt
               </Button>
               <Button
                 colorScheme="red"
@@ -50,7 +50,7 @@ export const DeleteSessionButton = ({ session }) => {
                 }}
                 ml={3}
               >
-                Delete
+                Radera
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

@@ -39,7 +39,7 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create new session</DrawerHeader>
+        <DrawerHeader>Skapa ny föreställning</DrawerHeader>
         <DrawerBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing="5">
@@ -91,7 +91,7 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
 
         <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>
-            Close
+            Stäng
           </Button>
         </DrawerFooter>
       </DrawerContent>
