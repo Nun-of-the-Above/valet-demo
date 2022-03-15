@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 
 //Will be with user as well
 export const RoundTimer = ({ round, setVotingEnabled }) => {
-  const [seconds, setSeconds] = useState(60);
+  const TIMER_DURATION = 82;
+  const [seconds, setSeconds] = useState(TIMER_DURATION);
   const [intervalState, setIntervalState] = useState(null);
 
   //Storing state of timer in localStorage
@@ -16,7 +17,7 @@ export const RoundTimer = ({ round, setVotingEnabled }) => {
 
         const diff = Math.ceil((currentTime - startTime) / 1000);
 
-        setSeconds(60 - diff);
+        setSeconds(TIMER_DURATION - diff);
       }
     } else {
       localStorage.setItem(round.roundID, new Date());

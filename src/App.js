@@ -5,7 +5,7 @@ import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
 import { Container, Divider, Heading, VStack, Grid } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/react";
+import { Image, Spinner, Box } from "@chakra-ui/react";
 
 function Home() {
   const { user } = useAuth();
@@ -47,9 +47,7 @@ const LoadingGateAuth = ({ children }) => {
 const Header = () => {
   return (
     <Container centerContent>
-      <Heading margin="5" letterSpacing="widest">
-        VALET
-      </Heading>
+      <Image src="/valetlogo.png" alt="VALET" height="100%" objectFit="cover" />
       <Divider marginBottom="5" />
     </Container>
   );

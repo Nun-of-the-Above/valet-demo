@@ -2,24 +2,24 @@ export const CANDIDATES_TOOLKIT = {
   Alina: {
     name: "Alina",
     image: "/alina.png",
-    color: "#325ea8",
+    color: "#ef88b7",
   },
 
   Filip: {
     name: "Filip",
     image: "/filip.png",
-    color: "#32a834",
+    color: "#daae57",
   },
 
   Isabelle: {
     name: "Isabelle",
     image: "/isabelle.png",
-    color: "#a83264",
+    color: "#037170",
   },
 
   Simon: {
     name: "Simon",
     image: "/simon.png",
-    color: "#9ba832",
+    color: "#323f74",
   },
 };
