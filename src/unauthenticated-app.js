@@ -7,7 +7,6 @@ import {
   Heading,
   Text,
   Grid,
-  Flex,
   GridItem,
 } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
@@ -15,7 +14,7 @@ import { useState } from "react";
 import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
 import { useSessionContext } from "./context/session-context";
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { Skeleton } from "@chakra-ui/react";
 
 export function UnauthenticatedApp() {
   const { login, registerWithRandomEmail } = useAuth();
@@ -96,37 +95,39 @@ export function UnauthenticatedApp() {
         </Container>
       )}
       <Button
+        backgroundColor={"white"}
         position="fixed"
         bottom="0"
         margin="30px"
         onClick={() => setAdminShow(!adminShow)}
-      >
-        ADMIN
-      </Button>
+      ></Button>
       {adminShow && (
-        <Container>
-          <Box position="fixed" bottom="50" margin="30px">
-            <Heading as="h3">Admin Login</Heading>
-            <form onSubmit={(e) => handleLogin(e)}>
-              <Input
-                placeholder="Username"
-                variant="outline"
-                value={email}
-                type="text"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Input
-                placeholder="Password"
-                variant="outline"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+        <Box
+          className="p-2 bg-white border-2 rounded-md"
+          position="fixed"
+          bottom="50"
+          margin="30px"
+        >
+          <Heading as="h3">Admin Login</Heading>
+          <form onSubmit={(e) => handleLogin(e)}>
+            <Input
+              placeholder="Username"
+              variant="outline"
+              value={email}
+              type="text"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="Password"
+              variant="outline"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-              <Button type="submit">Login</Button>
-            </form>
-          </Box>
-        </Container>
+            <Button type="submit">Login</Button>
+          </form>
+        </Box>
       )}
     </>
   );
