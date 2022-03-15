@@ -23,7 +23,7 @@ import {
   AlertDialogOverlay,
   Spinner,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export function SessionBox({ session }) {
   const { rounds } = useAdminContext();
@@ -47,7 +47,7 @@ export function SessionBox({ session }) {
               <VStack spacing={4}>
                 <ActivateSessionButton session={session} />
                 <DeactivateSessionButton session={session} />
-                {/* <SetSessionDoneButton session={session} /> */}
+                <SetSessionDoneButton session={session} />
               </VStack>
             </GridItem>
             <GridItem>
@@ -78,9 +78,6 @@ export function SessionBox({ session }) {
 const SessionInfoBox = ({ session }) => {
   return (
     <Box className="p-5 border-2 border-black rounded-lg">
-      {/* <Text>
-        <span className="font-bold">SessionID:</span> {session.sessionID}
-      </Text> */}
       <Text>
         <span className="font-bold">Status:</span>{" "}
         {session.active ? "Öppen" : "Stängd"}
@@ -127,13 +124,12 @@ const SetSessionDoneButton = ({ session }) => {
 
   return (
     <Button
-      disabled={session.done}
       onClick={() => {
         updateDoc(sessionRef, { done: true });
       }}
       className="m-5"
     >
-      SÄTT FÖRESTÄLLNING TILL KLAR
+      Sätt till klar och visa sista bild
     </Button>
   );
 };

@@ -15,6 +15,7 @@ import { db } from "../../firestore";
 import { RoundTimer } from "../RoundTimer/RoundTimer";
 import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers";
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
+import { TEST_CANDIDATES } from "../../constants/CANDIDATES_TOOLKIT";
 
 export function RoundBox({ round, disabled }) {
   const roundRef = doc(collection(db, "rounds"), round.roundID);
@@ -91,12 +92,21 @@ export function RoundBox({ round, disabled }) {
               disabled={!round.votingActive}
               onClick={() => {
                 updateDoc(roundRef, { votingActive: false, done: true });
-                correctIfDuplicateLosers(
-                  round,
-                  voteCount,
-                  session.candidatesLeft,
-                  votesInActiveRound
-                );
+                if (round.number === 0) {
+                  correctIfDuplicateLosers(
+                    round,
+                    voteCount,
+                    TEST_CANDIDATES,
+                    votesInActiveRound
+                  );
+                } else {
+                  correctIfDuplicateLosers(
+                    round,
+                    voteCount,
+                    session.candidatesLeft,
+                    votesInActiveRound
+                  );
+                }
               }}
             >
               AVSLUTA RÖSTNING
@@ -122,7 +132,8 @@ export function RoundBox({ round, disabled }) {
               }
               onClick={() => {
                 updateDoc(roundRef, { roundActive: false });
-                if (round.number !== 0) {
+                if (round.number === 0) {
+                } else {
                   updateCurrentCandidates(round, voteCount, rounds);
                 }
               }}

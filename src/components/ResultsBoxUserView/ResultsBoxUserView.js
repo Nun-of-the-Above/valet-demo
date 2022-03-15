@@ -13,12 +13,17 @@ export const ResultsBoxUserView = () => {
   const [voteCount, setVoteCount] = useState(null);
   const [data, setData] = useState(null);
   const [animationDone, setAnimationDone] = useState(false);
+  const testCandidates = ["Regn", "Blåsigt", "Åska", "Sol"];
 
   useEffect(() => {
     if (!votesInActiveRound || !currCandidates) return;
     const voteMap = new Map();
 
-    currCandidates.forEach((candidate) => voteMap.set(candidate, 0));
+    if (activeRound.number === 0) {
+      testCandidates.forEach((candidate) => voteMap.set(candidate, 0));
+    } else {
+      currCandidates.forEach((candidate) => voteMap.set(candidate, 0));
+    }
 
     votesInActiveRound.forEach((vote) => {
       voteMap.set(vote.candidate, Number(voteMap.get(vote.candidate) + 1));

@@ -33,44 +33,39 @@ export function UserPanel() {
     <>
       {isLoaded ? (
         <>
-          {activeRound && (
+          {activeRound ? (
             <>
-              {!activeRound && !activeSession.done && (
-                <p>Ingen runda aktiv just nu.</p>
-              )}
-
-              {activeRound.roundActive &&
-                !activeRound.votingActive &&
-                !activeRound.done && (
-                  <VStack>
-                    <Heading>En runda är aktiv.</Heading>
-                    <Text>Vänta på att röstningen startar...</Text>
-                  </VStack>
-                )}
-
               {activeRound.votingActive && <VotingBox />}
 
               {activeRound.done && !activeRound.displayResults && (
                 <VStack>
-                  <Heading>Röstningen är klar.</Heading>
-                  <Text>Vänta på resultatet...</Text>
+                  <Heading>Tack för din röst!</Heading>
+                  <Text>Invänta resultatet.</Text>
+                </VStack>
+              )}
+
+              {!activeRound.done && !activeRound.votingActive && (
+                <VStack>
+                  <Heading size="md">Ingen röstning aktiv just nu.</Heading>
                 </VStack>
               )}
 
               {activeRound.displayResults && <ResultsBoxUserView />}
             </>
+          ) : (
+            <>
+              {!activeSession.done && (
+                <VStack>
+                  <Heading size="md">Ingen röstning aktiv just nu.</Heading>
+                </VStack>
+              )}
+            </>
           )}
+
           {activeSession.done && (
             <VStack>
               <Heading>Vinnaren är...</Heading>
               <CandidateCard name={currCandidates} isLoaded={winnerDelay} />
-            </VStack>
-          )}
-
-          {!activeRound && !activeSession.done && (
-            <VStack>
-              <Heading size="md">Ingen röstning aktiv just nu.</Heading>
-              <Text>Titta på föreställningen.</Text>
             </VStack>
           )}
         </>

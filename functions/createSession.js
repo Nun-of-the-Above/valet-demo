@@ -55,7 +55,24 @@ exports.createSession = functions.https.onCall(async (data, context) => {
     });
   }
 
-  createRound(sessionID, 0);
+  async function createTestRound(sessionID, number) {
+    const roundID = number + "-" + sessionID;
+    const candidatesInTestRound = ["Regn", "Blåsigt", "Sol", "Åska"];
+
+    //Add round to firestore.
+    await db.collection("rounds").doc(roundID).set({
+      roundID: roundID,
+      parentSessionID: sessionID,
+      number: number,
+      candidatesInRound: candidatesInTestRound,
+      roundActive: false,
+      votingActive: false,
+      done: false,
+      displayResults: false,
+    });
+  }
+
+  createTestRound(sessionID, 0);
   createRound(sessionID, 1);
   createRound(sessionID, 2);
   createRound(sessionID, 3);

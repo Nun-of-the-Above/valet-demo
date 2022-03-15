@@ -38,8 +38,8 @@ export const CandidateVotingButton = ({ candidate }) => {
       onClick={() => {
         addVote(candidate);
         toast({
-          title: "Rösten har skickats iväg!",
-          description: `Du har röstat på ${candidate} i Runda #${activeRound.number}`,
+          title: "Tack för din röst!",
+          description: `Din röst på ${candidate} har registrerats.`,
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -54,10 +54,10 @@ export const CandidateVotingButton = ({ candidate }) => {
       borderColor={wasClicked ? CANDIDATES_TOOLKIT[candidate].color : "white"}
     >
       <VStack>
-        <SkeletonCircle size="75px" isLoaded={imageLoaded}>
+        <SkeletonCircle size="100px" isLoaded={imageLoaded}>
           <Image
             onLoad={() => setImageLoaded(true)}
-            boxSize="75px"
+            boxSize="100px"
             src={`/${candidate}.png`}
             borderRadius="full"
             fit="cover"
@@ -65,7 +65,9 @@ export const CandidateVotingButton = ({ candidate }) => {
           />
         </SkeletonCircle>
         <SkeletonText isLoaded={imageLoaded}>
-          <Heading size="md">{candidate}</Heading>
+          <Heading size="md" marginTop={3}>
+            {candidate}
+          </Heading>
         </SkeletonText>
       </VStack>
     </Button>

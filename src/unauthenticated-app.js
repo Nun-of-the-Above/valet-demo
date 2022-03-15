@@ -1,9 +1,21 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
-import { Box, Center, Container, Heading, Text } from "@chakra-ui/layout";
+import {
+  Box,
+  Center,
+  Container,
+  Heading,
+  Text,
+  Grid,
+  Flex,
+  GridItem,
+} from "@chakra-ui/layout";
+import { Image } from "@chakra-ui/react";
 import { useState } from "react";
+import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
 import { useSessionContext } from "./context/session-context";
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 
 export function UnauthenticatedApp() {
   const { login, registerWithRandomEmail } = useAuth();
@@ -28,6 +40,8 @@ export function UnauthenticatedApp() {
       setError(true);
     }
   };
+
+  const CANDIDATES_NAMES = ["Alina", "Filip", "Simon", "Isabelle"];
 
   return (
     <>
@@ -60,12 +74,25 @@ export function UnauthenticatedApp() {
         )
       ) : (
         <Container className="text-center">
-          <Heading size="md" as="h3">
-            Ingen förställning spelas just nu.
+          <Heading size="md" as="h3" marginTop={5}>
+            Välkommen till årets viktigaste val!
           </Heading>
           <Text className="mt-5">
-            Vänta på att föreställningen sätts igång.
+            Här kommer du skriva in ett lösenord när föreställningen börjar.
           </Text>
+
+          <Grid
+            gridTemplateColumns="1fr 1fr"
+            className="h-full gap-5 mt-10 place-items-center"
+          >
+            {CANDIDATES_NAMES.map((candidate) => {
+              return (
+                <GridItem key={candidate}>
+                  <CandidatePic candidate={candidate} />
+                </GridItem>
+              );
+            })}
+          </Grid>
         </Container>
       )}
       <Button
@@ -104,3 +131,20 @@ export function UnauthenticatedApp() {
     </>
   );
 }
+
+const CandidatePic = ({ candidate }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  return (
+    <Skeleton height="150px" width="150px" isLoaded={imageLoaded}>
+      <Image
+        onLoad={() => setImageLoaded(true)}
+        borderRadius={"5px"}
+        src={`/${candidate}.png`}
+        alt={`${candidate}`}
+        height="150px"
+        width="150px"
+        objectFit="cover"
+      />
+    </Skeleton>
+  );
+};

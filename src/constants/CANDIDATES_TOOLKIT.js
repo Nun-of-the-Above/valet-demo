@@ -22,4 +22,26 @@ export const CANDIDATES_TOOLKIT = {
     image: "/simon.png",
     color: "#323f74",
   },
+  Blåsigt: {
+    name: "Blåsigt",
+    image: "/blåsigt.png",
+    color: "#323f74",
+  },
+  Åska: {
+    name: "Åska",
+    image: "/åska.png",
+    color: "#037170",
+  },
+  Sol: {
+    name: "Sol",
+    image: "/sol.png",
+    color: "#daae57",
+  },
+  Regn: {
+    name: "Regn",
+    image: "/regn.png",
+    color: "#ef88b7",
+  },
 };
+
+export const TEST_CANDIDATES = ["Regn", "Blåsigt", "Åska", "Sol"];

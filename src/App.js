@@ -15,7 +15,7 @@ function Home() {
 function App() {
   const queryClient = new QueryClient();
   return (
-    <Grid gridTemplateRows={"100px 1fr"} height="90vh">
+    <Grid gridTemplateRows={"100px 1fr"} height="80vh">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>
@@ -48,7 +48,7 @@ const Header = () => {
   return (
     <Container centerContent>
       <Image src="/valetlogo.png" alt="VALET" height="100%" objectFit="cover" />
-      <Divider marginBottom="5" />
+      <Divider marginBottom="3" />
     </Container>
   );
 };
