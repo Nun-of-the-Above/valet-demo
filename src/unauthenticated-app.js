@@ -139,7 +139,7 @@ const CandidatePic = ({ candidate }) => {
       <Image
         onLoad={() => setImageLoaded(true)}
         borderRadius={"5px"}
-        src={`/${candidate}.png`}
+        src={`${CANDIDATES_TOOLKIT[candidate].image}`}
         alt={`${candidate}`}
         height="150px"
         width="150px"
