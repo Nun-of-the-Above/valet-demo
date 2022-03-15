@@ -19,9 +19,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>
-            <Header>VALET</Header>
+            <Header />
             <LoadingGateAuth>
-              <div className="w-full h-full">
+              <div className="w-full h-4/5">
                 <Home />
               </div>
             </LoadingGateAuth>

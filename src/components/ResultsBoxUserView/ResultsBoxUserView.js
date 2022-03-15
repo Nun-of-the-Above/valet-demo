@@ -54,10 +54,10 @@ export const ResultsBoxUserView = () => {
     <>
       {activeRound && activeRound.displayResults && (
         <>
-          <VStack width={"100%"} height="100%">
-            <Heading className="text-center" size="md">
+          <VStack width={"100%"}>
+            {/* <Heading className="text-center" size="md">
               RESULTAT
-            </Heading>
+            </Heading> */}
             <PieChart width={300} height={150} className="self-center mb-5">
               <Pie
                 nameKey="name"

@@ -51,22 +51,29 @@ export function UnauthenticatedApp() {
               <Heading size="md" className="mb-5 text-center">
                 LÖSENORD
               </Heading>
-              <Input
-                className="mb-2"
-                type="text"
-                value={secretWord}
-                onChange={(e) => {
-                  setSecretWord(e.target.value);
-                  setError(false);
-                }}
-              />
+              <div className="mb-2 border-2 border-green-200 rounded-md">
+                <Input
+                  className=""
+                  placeholder="Lösenord"
+                  type="text"
+                  value={secretWord}
+                  onChange={(e) => {
+                    setSecretWord(e.target.value);
+                    setError(false);
+                  }}
+                />
+              </div>
+              {error && (
+                <Heading size="sm" marginTop="3">
+                  Fel lösenord. Försök igen.
+                </Heading>
+              )}
               <Center>
-                <Button type="submit" className="m-2">
+                <Button type="submit" className="m-2 ">
                   LOGGA IN
                 </Button>
               </Center>
             </form>
-            {error && <Text>Fel lösenord. Försök igen.</Text>}
           </Container>
         ) : (
           <p>Föreställningen hämtades men är inte igång.</p>
