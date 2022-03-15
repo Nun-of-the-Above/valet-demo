@@ -1,7 +1,10 @@
 import { Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
-import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
+import {
+  CANDIDATES_TOOLKIT,
+  TEST_CANDIDATES,
+} from "../../constants/CANDIDATES_TOOLKIT";
 import { useSessionContext } from "../../context/session-context";
 import { CandidateCard } from "../CandidateCard";
 import { Grid, GridItem } from "@chakra-ui/react";
@@ -13,14 +16,13 @@ export const ResultsBoxUserView = () => {
   const [voteCount, setVoteCount] = useState(null);
   const [data, setData] = useState(null);
   const [animationDone, setAnimationDone] = useState(false);
-  const testCandidates = ["Regn", "Blåsigt", "Åska", "Sol"];
 
   useEffect(() => {
     if (!votesInActiveRound || !currCandidates) return;
     const voteMap = new Map();
 
     if (activeRound.number === 0) {
-      testCandidates.forEach((candidate) => voteMap.set(candidate, 0));
+      TEST_CANDIDATES.forEach((candidate) => voteMap.set(candidate, 0));
     } else {
       currCandidates.forEach((candidate) => voteMap.set(candidate, 0));
     }

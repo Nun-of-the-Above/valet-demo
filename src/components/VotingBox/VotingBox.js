@@ -13,7 +13,7 @@ export const VotingBox = () => {
   return (
     <>
       {votingEnabled ? (
-        <Grid className="h-full" gridTemplateRows={"1fr 2fr "}>
+        <Grid className="mb-32" gridTemplateRows={"1fr 3fr"}>
           <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
           {activeRound.number === 0 ? (
             <Grid

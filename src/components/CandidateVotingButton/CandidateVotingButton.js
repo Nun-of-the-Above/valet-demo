@@ -58,7 +58,7 @@ export const CandidateVotingButton = ({ candidate }) => {
           <Image
             onLoad={() => setImageLoaded(true)}
             boxSize="100px"
-            src={`/${candidate}.png`}
+            src={`${CANDIDATES_TOOLKIT[candidate].image}`}
             borderRadius="full"
             fit="cover"
             alt={`Bild på ${candidate}`}

@@ -46,9 +46,9 @@ const LoadingGateAuth = ({ children }) => {
 
 const Header = () => {
   return (
-    <Container centerContent>
+    <Container centerContent marginBottom={3}>
       <Image src="/valetlogo.png" alt="VALET" height="100%" objectFit="cover" />
-      <Divider marginBottom="3" />
+      <Divider />
     </Container>
   );
 };

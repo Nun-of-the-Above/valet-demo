@@ -22,7 +22,7 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
           className="border-2 border-black rounded-full "
           boxSize="80px"
           fit="cover"
-          src={`/${candidate.name}.png`}
+          src={`${CANDIDATES_TOOLKIT[name].image}`}
           alt={candidate.name}
         />
       </SkeletonCircle>

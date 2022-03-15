@@ -24,6 +24,31 @@ export const CANDIDATES_TOOLKIT = {
   },
   Blåsigt: {
     name: "Blåsigt",
+    image: "/blasigt.png",
+    color: "#323f74",
+  },
+  Åska: {
+    name: "Åska",
+    image: "/aska.png",
+    color: "#037170",
+  },
+  Sol: {
+    name: "Sol",
+    image: "/sol.png",
+    color: "#daae57",
+  },
+  Regn: {
+    name: "Regn",
+    image: "/regn.png",
+    color: "#ef88b7",
+  },
+};
+
+export const TEST_CANDIDATES = ["Regn", "Blåsigt", "Åska", "Sol"];
+
+export const TEST_CANDIDATES_TOOLKIT = {
+  Blåsigt: {
+    name: "Blåsigt",
     image: "/blåsigt.png",
     color: "#323f74",
   },
@@ -43,5 +68,3 @@ export const CANDIDATES_TOOLKIT = {
     color: "#ef88b7",
   },
 };
-
-export const TEST_CANDIDATES = ["Regn", "Blåsigt", "Åska", "Sol"];
