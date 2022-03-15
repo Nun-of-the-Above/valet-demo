@@ -30,9 +30,6 @@ export const VotingBox = () => {
             </Grid>
           ) : (
             <>
-              <Heading className="mx-16 mt-16 text-center" size="md">
-                Rösta på den kandidat du vill ska vara kvar
-              </Heading>
               <Grid
                 gridTemplateColumns="1fr 1fr"
                 className="gap-4 mx-5 my-10 place-items-center"

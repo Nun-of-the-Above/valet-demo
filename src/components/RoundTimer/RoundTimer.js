@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 //Will be with user as well
 export const RoundTimer = ({ round, setVotingEnabled }) => {
-  const TIMER_DURATION = round.number === 0 ? 30 : 82;
+  const TIMER_DURATION = round.number === 0 ? 30 : 60;
   const [seconds, setSeconds] = useState(TIMER_DURATION);
   const [intervalState, setIntervalState] = useState(null);
 

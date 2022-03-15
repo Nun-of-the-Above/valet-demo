@@ -27,9 +27,9 @@ export const correctIfDuplicateLosers = async (
   //Case 1: Single loser. Just return.
   if (losers.length === 1) return;
 
-  //Case 2: Multiple losers and are >0.
+  //Case 2: Multiple losers and are >1.
   //Choose loser at random from losers, delete a vote for that candidate.
-  if (loserVoteCount > 0) {
+  if (loserVoteCount > 1) {
     const voteToDelete = votesInActiveRound.find(
       (vote) => vote.candidate === nameOfRandomLoser
     );
@@ -41,8 +41,8 @@ export const correctIfDuplicateLosers = async (
     }
   }
 
-  //Case 3: Multiple losers with zero votes.
-  if (loserVoteCount === 0) {
+  //Case 3: Multiple losers with zero or one votes.
+  if (loserVoteCount === 0 || loserVoteCount === 1) {
     const batch = writeBatch(db);
     try {
       //Add vote to all relevant candidates.

@@ -1,13 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import {
-  Box,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  VStack,
-  Text,
-} from "@chakra-ui/layout";
+import { Box, Grid, GridItem, Heading, VStack, Text } from "@chakra-ui/layout";
 import { collection, doc, updateDoc } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAdminContext } from "../../context/admin-context";
@@ -16,6 +8,7 @@ import { RoundTimer } from "../RoundTimer/RoundTimer";
 import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers";
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
 import { TEST_CANDIDATES } from "../../constants/CANDIDATES_TOOLKIT";
+import { TempAdminFastVoting } from "../../components/TempAdminFastVoting";
 
 export function RoundBox({ round, disabled }) {
   const roundRef = doc(collection(db, "rounds"), round.roundID);
@@ -156,7 +149,7 @@ export function RoundBox({ round, disabled }) {
         </Button> */}
 
         {/** TEMPORARY FAST VOTING */}
-        {/* {round.votingActive && <TempAdminFastVoting round={round} />} */}
+        {round.votingActive && <TempAdminFastVoting round={round} />}
       </VStack>
     </Box>
   );
