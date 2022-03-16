@@ -4,8 +4,8 @@ import { SessionProvider } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, Heading, VStack, Grid } from "@chakra-ui/layout";
-import { Image, Spinner, Box } from "@chakra-ui/react";
+import { Container, Divider, VStack } from "@chakra-ui/layout";
+import { Image, Spinner } from "@chakra-ui/react";
 
 function Home() {
   const { user } = useAuth();
@@ -15,7 +15,7 @@ function Home() {
 function App() {
   const queryClient = new QueryClient();
   return (
-    <Grid gridTemplateRows={"100px 1fr"} height="80vh">
+    <VStack>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>
@@ -26,7 +26,7 @@ function App() {
           </SessionProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </Grid>
+    </VStack>
   );
 }
 
@@ -44,8 +44,8 @@ const LoadingGateAuth = ({ children }) => {
 
 const Header = () => {
   return (
-    <Container centerContent marginBottom={3}>
-      <Image src="/valetlogo.png" alt="VALET" height="100%" objectFit="cover" />
+    <Container centerContent>
+      <Image src="/valetlogo.png" alt="VALET" height="13vh" objectFit="cover" />
       <Divider />
     </Container>
   );

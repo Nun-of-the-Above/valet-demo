@@ -90,7 +90,8 @@ export function UnauthenticatedApp() {
 
           <Grid
             gridTemplateColumns="1fr 1fr"
-            className="h-full gap-5 mt-10 place-items-center"
+            gridTemplateRows="1fr 1fr"
+            className="gap-5 mt-10 place-items-center"
           >
             {CANDIDATES_NAMES.map((candidate) => {
               return (
@@ -144,16 +145,16 @@ export function UnauthenticatedApp() {
 const CandidatePic = ({ candidate }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   return (
-    <SkeletonCircle height="150px" width="150px" isLoaded={imageLoaded}>
+    <Skeleton height="150px" width="150px" isLoaded={imageLoaded}>
       <Image
         onLoad={() => setImageLoaded(true)}
-        borderRadius={"full"}
+        borderRadius={"lg"}
         src={`${CANDIDATES_TOOLKIT[candidate].image}`}
         alt={`${candidate}`}
         height="150px"
         width="150px"
         objectFit="cover"
       />
-    </SkeletonCircle>
+    </Skeleton>
   );
 };
