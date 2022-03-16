@@ -9,7 +9,7 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/react";
+import { Image, SkeletonCircle } from "@chakra-ui/react";
 import { useState } from "react";
 import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
@@ -81,10 +81,11 @@ export function UnauthenticatedApp() {
       ) : (
         <Container className="text-center">
           <Heading size="md" as="h3" marginTop={5}>
-            Välkommen till årets viktigaste val!
+            Välkommen till årets viktigaste val
           </Heading>
-          <Text className="mt-5">
-            Här kommer du skriva in ett lösenord när föreställningen börjar.
+          <Text fontSize="xl" className="mt-5">
+            Här kommer du få skriva in ett lösenord innan föreställningen
+            börjar.
           </Text>
 
           <Grid
@@ -143,16 +144,16 @@ export function UnauthenticatedApp() {
 const CandidatePic = ({ candidate }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   return (
-    <Skeleton height="150px" width="150px" isLoaded={imageLoaded}>
+    <SkeletonCircle height="150px" width="150px" isLoaded={imageLoaded}>
       <Image
         onLoad={() => setImageLoaded(true)}
-        borderRadius={"5px"}
+        borderRadius={"full"}
         src={`${CANDIDATES_TOOLKIT[candidate].image}`}
         alt={`${candidate}`}
         height="150px"
         width="150px"
         objectFit="cover"
       />
-    </Skeleton>
+    </SkeletonCircle>
   );
 };
