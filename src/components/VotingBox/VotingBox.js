@@ -13,12 +13,15 @@ export const VotingBox = () => {
   return (
     <>
       {votingEnabled ? (
-        <Grid className="mb-32" gridTemplateRows={"1fr 3fr"}>
+        <VStack className="mb-32">
           <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
+          <Heading className="px-12 py-2 text-center" size="lg">
+            Rösta på den kandidat du vill ska vara kvar
+          </Heading>
           {activeRound.number === 0 ? (
             <Grid
               gridTemplateColumns="1fr 1fr"
-              className="h-full mx-5 my-10 place-items-center"
+              className="gap-4 place-items-center"
             >
               {TEST_CANDIDATES.map((candidate) => {
                 return (
@@ -44,7 +47,7 @@ export const VotingBox = () => {
               </Grid>
             </>
           )}
-        </Grid>
+        </VStack>
       ) : (
         <VStack>
           <Heading>Tack för din röst!</Heading>

@@ -21,9 +21,7 @@ function App() {
           <SessionProvider>
             <Header />
             <LoadingGateAuth>
-              <div className="w-full h-full">
-                <Home />
-              </div>
+              <Home />
             </LoadingGateAuth>
           </SessionProvider>
         </AuthProvider>

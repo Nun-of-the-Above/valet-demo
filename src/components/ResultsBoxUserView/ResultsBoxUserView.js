@@ -94,7 +94,7 @@ export const ResultsBoxUserView = () => {
                 outerRadius={100}
                 animationDuration={2500}
                 animationEasing="ease-in-out"
-                label={renderCustomizedLabel}
+                // label={renderCustomizedLabel}
                 labelLine={false}
                 onAnimationEnd={() => setAnimationDone(true)}
               >
