@@ -1,9 +1,10 @@
 import {
   Heading,
   Image,
+  Skeleton,
   SkeletonCircle,
   SkeletonText,
-  VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
 
@@ -11,27 +12,40 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
   const candidate = CANDIDATES_TOOLKIT[name];
 
   return (
-    <VStack
-      width="150px"
-      height="200px"
-      className="p-5 text-center border-2 rounded-2xl"
-      borderColor={candidate.color}
+    <HStack
+      className="w-full p-3 text-center text-white border-2 rounded-2xl"
+      bgColor={isLoaded ? candidate.color : "#e3e1dc"}
     >
-      <SkeletonCircle size="80px" isLoaded={isLoaded} fadeDuration={2}>
+      <SkeletonCircle
+        minW="70px"
+        minH="70px"
+        isLoaded={isLoaded}
+        fadeDuration={2}
+        className="mr-1"
+      >
         <Image
-          className="border-2 border-black rounded-full "
-          boxSize="80px"
+          className="rounded-full"
+          boxSize="70px"
           fit="cover"
           src={`${CANDIDATES_TOOLKIT[name].image}`}
           alt={candidate.name}
         />
       </SkeletonCircle>
-      <SkeletonText isLoaded={isLoaded} fadeDuration={2} width="full">
-        <Heading size="md" className="my-3">
-          {candidate.name}
-        </Heading>
-        <Heading size="md">{text}</Heading>
+
+      <SkeletonText
+        isLoaded={isLoaded}
+        fadeDuration={2}
+        width="full"
+        noOfLines={2}
+        className="pr-3"
+      >
+        <HStack justify="space-between">
+          <Heading size="md" className="my-3">
+            {candidate.name}
+          </Heading>
+          <Heading size="md">{text}</Heading>
+        </HStack>
       </SkeletonText>
-    </VStack>
+    </HStack>
   );
 };

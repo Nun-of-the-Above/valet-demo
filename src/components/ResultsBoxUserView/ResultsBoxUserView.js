@@ -1,4 +1,4 @@
-import { Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
+import { Flex, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import {
@@ -55,7 +55,7 @@ export const ResultsBoxUserView = () => {
       {activeRound && activeRound.displayResults && (
         <>
           <VStack width={"100%"}>
-            <PieChart width={300} height={150} className="self-center mb-5">
+            <PieChart width={300} height={110} className="self-center -mb-3">
               <Pie
                 nameKey="name"
                 dataKey="value"
@@ -64,42 +64,41 @@ export const ResultsBoxUserView = () => {
                 data={data}
                 cx="50%"
                 cy="100%"
-                outerRadius={70}
-                fill="#8884d8"
+                outerRadius={100}
                 animationDuration={2500}
                 animationEasing="ease-in-out"
-                label={(entry) => `${entry.name}`}
+                // label={(entry) => `${entry.value}`}
                 onAnimationEnd={() => setAnimationDone(true)}
               >
                 {data &&
                   data.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={CANDIDATES_TOOLKIT[entry.name].color}
+                      fill={
+                        animationDone
+                          ? CANDIDATES_TOOLKIT[entry.name].color
+                          : "#e3e1dc"
+                      }
                     />
                   ))}
               </Pie>
             </PieChart>
 
             {data ? (
-              <Grid
-                padding="3"
-                className="rounded-lg"
-                templateColumns="1fr 1fr"
-              >
+              <VStack className="p-4 rounded-lg" width="full">
                 {data
                   .map((obj) => [obj.name, obj.value])
                   .sort((a, b) => b[1] - a[1])
                   .map(([name, percentageOfVotes]) => (
-                    <GridItem key={name} className="m-3">
-                      <CandidateCard
-                        name={name}
-                        text={`${percentageOfVotes}%`}
-                        isLoaded={animationDone}
-                      />
-                    </GridItem>
+                    <CandidateCard
+                      className="m-3"
+                      key={name}
+                      name={name}
+                      text={`${percentageOfVotes}%`}
+                      isLoaded={animationDone}
+                    />
                   ))}
-              </Grid>
+              </VStack>
             ) : (
               <>
                 {data && (
