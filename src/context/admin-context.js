@@ -36,7 +36,6 @@ const AdminProvider = ({ children }) => {
       };
     });
 
-    console.log(extendedRounds);
     setExtendedRounds(roundsAgain);
   }, [rounds, votes]);
 

@@ -23,6 +23,7 @@ export const TempAdminFastVoting = ({ round }) => {
         .map((candidate) => (
           <Button
             key={candidate}
+            colorScheme={"green"}
             className="m-1 justify-self-center"
             onClick={() => addVote(candidate)}
           >

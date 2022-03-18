@@ -15,35 +15,38 @@ export const VotingBox = () => {
       {votingEnabled ? (
         <VStack className="mb-32">
           <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
-          <Heading className="px-12 py-2 text-center" size="lg">
-            Rösta på den kandidat du vill ska vara kvar
-          </Heading>
           {activeRound.number === 0 ? (
-            <Grid
-              gridTemplateColumns="1fr 1fr"
-              className="gap-4 place-items-center"
-            >
-              {TEST_CANDIDATES.map((candidate) => {
-                return (
-                  <GridItem key={candidate}>
-                    <CandidateVotingButton candidate={candidate} />
-                  </GridItem>
-                );
-              })}
-            </Grid>
-          ) : (
             <>
+              <Heading className="px-12 py-2 text-center" size="lg">
+                Rösta på det väder du tycker det är idag
+              </Heading>
               <Grid
                 gridTemplateColumns="1fr 1fr"
-                className="gap-4 mx-5 my-10 place-items-center"
+                className="gap-4 place-items-center"
               >
-                {currCandidates.map((candidate) => {
-                  return (
-                    <GridItem key={candidate}>
-                      <CandidateVotingButton candidate={candidate} />
-                    </GridItem>
-                  );
-                })}
+                {TEST_CANDIDATES.map((candidate) => (
+                  <CandidateVotingButton
+                    key={candidate}
+                    candidate={candidate}
+                  />
+                ))}
+              </Grid>
+            </>
+          ) : (
+            <>
+              <Heading className="px-12 py-2 text-center" size="lg">
+                Rösta på den kandidat du vill ska vara kvar
+              </Heading>
+              <Grid
+                gridTemplateColumns="1fr 1fr"
+                className="gap-4 place-items-center"
+              >
+                {currCandidates.map((candidate) => (
+                  <CandidateVotingButton
+                    key={candidate}
+                    candidate={candidate}
+                  />
+                ))}
               </Grid>
             </>
           )}

@@ -23,7 +23,7 @@ import {
   AlertDialogOverlay,
   Spinner,
 } from "@chakra-ui/react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 
 export function SessionBox({ session }) {
   const { rounds } = useAdminContext();
@@ -33,27 +33,19 @@ export function SessionBox({ session }) {
       {!session ? (
         <Spinner />
       ) : (
-        <Flex
-          className="flex-col p-10 m-10 rounded-md"
-          border="1px solid black"
-        >
-          <Heading as="h2" size="lg" className="mb-5 text-center">
+        <Flex className="flex-col p-3 m-10 rounded-md" border="1px solid black">
+          <Heading as="h2" size="lg" className="text-center ">
             {new Date(session.showDate).toDateString()}, {session.stage},{" "}
             {session.city}
           </Heading>
+          <SessionInfoBox session={session} />
 
-          <Grid className="m-10" gridTemplateColumns={"2fr 1fr"}>
-            <GridItem>
-              <VStack spacing={4}>
-                <ActivateSessionButton session={session} />
-                <DeactivateSessionButton session={session} />
-                <SetSessionDoneButton session={session} />
-              </VStack>
-            </GridItem>
-            <GridItem>
-              <SessionInfoBox session={session} />
-            </GridItem>
-          </Grid>
+          <HStack className="justify-around w-full my-8">
+            <ActivateSessionButton session={session} />
+            <DeactivateSessionButton session={session} />
+            <SetSessionDoneButton session={session} />
+            <DeleteSessionButton session={session} />
+          </HStack>
 
           <HStack className="justify-between">
             {rounds &&
@@ -67,8 +59,6 @@ export function SessionBox({ session }) {
                   />
                 ))}
           </HStack>
-
-          <DeleteSessionButton session={session} />
         </Flex>
       )}
     </>
@@ -77,29 +67,35 @@ export function SessionBox({ session }) {
 
 const SessionInfoBox = ({ session }) => {
   return (
-    <Box className="p-5 border-2 border-black rounded-lg">
-      <Text>
-        <span className="font-bold">Status:</span>{" "}
-        {session.active ? "Öppen" : "Stängd"}
-      </Text>
-      <Text>
-        <span className="font-bold">Speldatum:</span>
-        {new Date(session.showDate).toLocaleString()}
-      </Text>
-      <Text>
-        <span className="font-bold">Scen:</span> {session.stage}
-      </Text>
-      <Text>
-        <span className="font-bold">Stad:</span> {session.city}
-      </Text>
-      <Text>
-        <span className="font-bold">Genomförd:</span>{" "}
-        {session.done ? "Ja" : "Nej"}
-      </Text>
-      <Text>
-        <span className="font-bold">Hemligt ord:</span> {session.secretWord}
-      </Text>
-    </Box>
+    <Flex className="justify-between p-2 border-2 border-black rounded-lg">
+      <Flex className="flex-col">
+        <Text>
+          <span className="font-bold">Status:</span>{" "}
+          {session.active ? "Öppen" : "Stängd"}
+        </Text>
+        <Text>
+          <span className="font-bold">Speldatum:</span>
+          {new Date(session.showDate).toLocaleString()}
+        </Text>
+      </Flex>
+      <Flex className="flex-col">
+        <Text>
+          <span className="font-bold">Scen:</span> {session.stage}
+        </Text>
+        <Text>
+          <span className="font-bold">Stad:</span> {session.city}
+        </Text>
+      </Flex>
+      <Flex className="flex-col">
+        <Text>
+          <span className="font-bold">Genomförd:</span>{" "}
+          {session.done ? "Ja" : "Nej"}
+        </Text>
+        <Text>
+          <span className="font-bold">Hemligt ord:</span> {session.secretWord}
+        </Text>
+      </Flex>
+    </Flex>
   );
 };
 
@@ -127,7 +123,6 @@ const SetSessionDoneButton = ({ session }) => {
       onClick={() => {
         updateDoc(sessionRef, { done: true });
       }}
-      className="m-5"
     >
       Sätt till klar och visa sista bild
     </Button>
@@ -142,7 +137,7 @@ const DeactivateSessionButton = ({ session }) => {
   const cancelRef = useRef();
 
   return (
-    <div className="m-5">
+    <>
       <Button
         colorScheme="red"
         disabled={!session.active}
@@ -186,6 +181,6 @@ const DeactivateSessionButton = ({ session }) => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </div>
+    </>
   );
 };

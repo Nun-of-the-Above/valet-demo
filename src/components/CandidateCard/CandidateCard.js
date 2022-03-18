@@ -1,7 +1,6 @@
 import {
   Heading,
   Image,
-  Skeleton,
   SkeletonCircle,
   SkeletonText,
   HStack,
@@ -27,7 +26,7 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
           className="rounded-full"
           boxSize="70px"
           fit="cover"
-          src={`${CANDIDATES_TOOLKIT[name].image}`}
+          src={`${candidate.image}`}
           alt={candidate.name}
         />
       </SkeletonCircle>

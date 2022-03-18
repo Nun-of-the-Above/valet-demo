@@ -18,7 +18,7 @@ export const DeleteSessionButton = ({ session }) => {
   const { rounds, votes } = useAdminContext();
 
   return (
-    <div className="m-5">
+    <>
       <Button colorScheme="red" onClick={() => setIsOpen(true)}>
         Radera föreställning
       </Button>
@@ -56,6 +56,6 @@ export const DeleteSessionButton = ({ session }) => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </div>
+    </>
   );
 };

@@ -45,6 +45,7 @@ export function RoundBox({ round, disabled }) {
   return (
     <Box
       className="self-start p-5 rounded-3xl"
+      bgColor={"white"}
       border={`1px solid ${round.roundActive ? "red" : "black"}`}
     >
       <VStack>
@@ -107,12 +108,13 @@ export function RoundBox({ round, disabled }) {
 
             <Button
               colorScheme="green"
+              width={"full"}
               disabled={round.displayResults || !round.done}
               onClick={() => {
                 updateDoc(roundRef, { displayResults: true });
               }}
             >
-              VISA RESULTAT FÖR PUBLIKEN
+              VISA RESULTAT
             </Button>
             <Button
               width="full"
