@@ -47,7 +47,7 @@ export const CandidateVotingButton = ({ candidate }) => {
         setWasClicked(() => true);
       }}
       bgColor={CANDIDATES_TOOLKIT[candidate].color}
-      color={"white"}
+      color={wasClicked ? "black" : "white"}
       rounded={"lg"}
       disabled={!activeRound.roundActive || userVoteInActiveRound}
       width="140px"
@@ -55,7 +55,6 @@ export const CandidateVotingButton = ({ candidate }) => {
       padding="5"
       border={"2px"}
       borderColor={wasClicked ? "green" : "white"}
-      backdropBlur={10}
     >
       <VStack>
         <SkeletonCircle size="100px" className="mb-2" isLoaded={imageLoaded}>
