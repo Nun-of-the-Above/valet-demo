@@ -14,7 +14,7 @@ export const VotingBox = () => {
     <>
       {votingEnabled ? (
         <VStack className="mb-32">
-          <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} />
+          {/* <RoundTimer round={activeRound} setVotingEnabled={setVotingEnabled} /> */}
           {activeRound.number === 0 ? (
             <>
               <Heading className="px-12 py-2 text-center" size="lg">
@@ -41,12 +41,18 @@ export const VotingBox = () => {
                 gridTemplateColumns="1fr 1fr"
                 className="gap-4 place-items-center"
               >
-                {currCandidates.map((candidate) => (
-                  <CandidateVotingButton
-                    key={candidate}
-                    candidate={candidate}
-                  />
-                ))}
+                {currCandidates
+                  .sort((a, b) => {
+                    if (a < b) return 1;
+                    if (a > b) return -1;
+                    else return 0;
+                  })
+                  .map((candidate) => (
+                    <CandidateVotingButton
+                      key={candidate}
+                      candidate={candidate}
+                    />
+                  ))}
               </Grid>
             </>
           )}
