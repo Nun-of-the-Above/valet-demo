@@ -38,16 +38,25 @@ export function UserPanel() {
               {activeRound.votingActive && <VotingBox />}
 
               {activeRound.done && !activeRound.displayResults && (
-                <VStack>
-                  <Heading>Tack för din röst!</Heading>
-                  <Text>Invänta resultatet.</Text>
-                </VStack>
+                <div className="flex flex-col gap-4 h-3/4 place-content-center place-items-center animate-pulse">
+                  {/* <Heading className="text-center">Tack för din röst!</Heading> */}
+                  {/* <Heading size="md" className="text-center"> */}
+                  {/* Invänta resultatet. */}
+                  {/* </Heading> */}
+
+                  <Spinner size="xl" speed="1s" />
+                  <Heading size="md" className="mb-2">
+                    Rösterna räknas...
+                  </Heading>
+                </div>
               )}
 
               {!activeRound.done && !activeRound.votingActive && (
-                <VStack>
-                  <Heading size="md">Ingen röstning aktiv just nu.</Heading>
-                </VStack>
+                <div className="flex flex-col h-3/4 place-content-center">
+                  <Heading size="md" className="mt-4 text-center">
+                    Ingen röstning aktiv just nu.
+                  </Heading>
+                </div>
               )}
 
               {activeRound.displayResults && <ResultsBoxUserView />}
@@ -55,9 +64,11 @@ export function UserPanel() {
           ) : (
             <>
               {!activeSession.done && (
-                <VStack>
-                  <Heading size="md">Ingen röstning aktiv just nu.</Heading>
-                </VStack>
+                <div className="flex flex-col h-3/4 place-content-center">
+                  <Heading size="md" className="mt-4">
+                    Ingen röstning aktiv just nu.
+                  </Heading>
+                </div>
               )}
             </>
           )}

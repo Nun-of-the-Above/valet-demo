@@ -15,7 +15,7 @@ function Home() {
 function App() {
   const queryClient = new QueryClient();
   return (
-    <VStack>
+    <VStack className="w-screen h-screen">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <SessionProvider>

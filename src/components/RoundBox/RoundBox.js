@@ -9,6 +9,8 @@ import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
 import { TEST_CANDIDATES } from "../../constants/CANDIDATES_TOOLKIT";
 import { TempAdminFastVoting } from "../../components/TempAdminFastVoting";
+import { CandidateCard } from "../CandidateCard";
+import { AiOutlineArrowUp } from "react-icons/ai";
 
 export function RoundBox({ round, disabled }) {
   const roundRef = doc(collection(db, "rounds"), round.roundID);
@@ -45,6 +47,7 @@ export function RoundBox({ round, disabled }) {
   return (
     <Box
       className="self-start p-5 rounded-3xl"
+      opacity={round.done && !round.roundActive ? "0.5" : "1"}
       bgColor={"white"}
       border={`1px solid ${round.roundActive ? "red" : "black"}`}
     >
@@ -138,7 +141,9 @@ export function RoundBox({ round, disabled }) {
           </>
         )}
 
-        {voteCount && <ResultsBoxAdmin voteCount={voteCount} />}
+        {voteCount && (round.done || round.roundActive) && (
+          <ResultsBoxAdmin voteCount={voteCount} round={round} />
+        )}
         {/* <Button
           width="full"
           colorScheme="red"
@@ -151,35 +156,88 @@ export function RoundBox({ round, disabled }) {
         </Button> */}
 
         {/** TEMPORARY FAST VOTING */}
-        {round.votingActive && <TempAdminFastVoting round={round} />}
+        {/* {round.votingActive && <TempAdminFastVoting round={round} />} */}
       </VStack>
     </Box>
   );
 }
 
-const ResultsBoxAdmin = ({ voteCount }) => {
+const ResultsBoxAdmin = ({ voteCount, round }) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    if (!voteCount) return;
+
+    const totalVotes = voteCount.reduce((acc, [name, votes]) => acc + votes, 0);
+    const percentagePerVote = 100 / totalVotes;
+
+    const percentageData = voteCount
+      .map(([c, v]) => [c, Math.floor(v * percentagePerVote * 100) / 100])
+      .map(([name, percent]) => ({
+        name: name,
+        value: percent,
+      }));
+
+    setData(percentageData);
+  }, [voteCount]);
+
   return (
     <>
       <Heading className="text-center" size="md">
         RESULTAT
       </Heading>
-      <Grid
-        templateColumns="1fr 1fr"
-        border="1px"
+      <VStack
         padding="3"
         width="full"
         className="rounded-lg place-content-evenly"
       >
-        {voteCount
-          .sort((a, b) => a[0] - b[0])
-          .map(([candidate, numOfVotes]) => (
-            <GridItem key={candidate}>
-              <Text className="m-1 whitespace-nowrap">
-                {candidate}: {numOfVotes}
-              </Text>
-            </GridItem>
-          ))}
-      </Grid>
+        {data &&
+          data
+            .map((obj) => [obj.name, obj.value])
+            .sort((a, b) => b[1] - a[1])
+            .map(([name, percentageOfVotes], index, array) => {
+              const loser = index === array.length - 1;
+              return (
+                <div
+                  key={name}
+                  className={`w-full ${
+                    loser &&
+                    (round.votingActive || round.done) &&
+                    round.roundActive
+                      ? "border-red-400 border-8 border-solid"
+                      : ""
+                  }
+                  `}
+                >
+                  <CandidateCard
+                    name={name}
+                    text={`${percentageOfVotes}%`}
+                    isLoaded={true}
+                  />
+                </div>
+              );
+            })}
+      </VStack>
+      {round.votingActive && (
+        <>
+          <AiOutlineArrowUp
+            size={"100px"}
+            className="animate-bounce"
+            color="red"
+          />
+          <Heading className="text-center" size="md">
+            TROLIG FÖRLORARE
+          </Heading>
+        </>
+      )}
+      {round.done && round.roundActive && (
+        <>
+          <AiOutlineArrowUp size={"100px"} color="red" />
+          <Heading className="text-center" size="md">
+            DEFINITIV FÖRLORARE
+          </Heading>
+        </>
+      )}
     </>
   );
 };

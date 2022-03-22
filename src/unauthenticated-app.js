@@ -54,6 +54,7 @@ export function UnauthenticatedApp() {
               <div className="mb-2 border-2 border-green-200 rounded-md">
                 <Input
                   className=""
+                  colorScheme={"green"}
                   placeholder="Lösenord"
                   type="text"
                   value={secretWord}

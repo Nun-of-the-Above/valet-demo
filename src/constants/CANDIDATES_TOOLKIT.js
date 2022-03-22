@@ -46,6 +46,8 @@ export const CANDIDATES_TOOLKIT = {
 
 export const TEST_CANDIDATES = ["Regn", "Blåsigt", "Åska", "Sol"];
 
+export const INITIAL_CANDIDATES = ["Alina", "Filip", "Isabelle", "Simon"];
+
 export const TEST_CANDIDATES_TOOLKIT = {
   Blåsigt: {
     name: "Blåsigt",
