@@ -2,34 +2,27 @@ import {
   Box,
   Button,
   Center,
-  Flex,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Heading,
   HStack,
   Image,
   Skeleton,
   SkeletonCircle,
   SkeletonText,
-  Text,
   useDisclosure,
   useToast,
-  VStack,
-} from "@chakra-ui/react";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
 } from "@chakra-ui/react";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "../../context/auth-context";
 import { useSessionContext } from "../../context/session-context";
 import { db } from "../../firestore";
-import { v4 as uuidv4 } from "uuid";
-import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
 
 export const CandidateVotingButton = ({ candidate, stillActive }) => {
   const { user } = useAuth();
@@ -137,7 +130,7 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
           <DrawerBody>
             <HStack className="w-full mb-5">
               <Button
-                className="flex-1 p-7"
+                className="flex-1 p-10"
                 colorScheme="green"
                 onClick={() => {
                   onClose();
@@ -156,7 +149,7 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
                 SKICKA RÖST
               </Button>
               <Button
-                className="flex-1 p-7"
+                className="flex-1 p-10"
                 colorScheme={"red"}
                 onClick={onClose}
               >

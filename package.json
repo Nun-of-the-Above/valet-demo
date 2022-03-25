@@ -40,7 +40,8 @@
     "eject": "react-scripts eject",
     "local": "react-scripts build && firebase emulators:start",
     "backend": "firebase emulators:start --only functions,firestore",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "react-scripts build && firebase deploy",
+    "deploy-hosting": "react-scripts build && firebase deploy --only hosting"
   },
   "eslintConfig": {
     "extends": [

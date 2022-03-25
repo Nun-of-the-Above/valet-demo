@@ -12,7 +12,7 @@ export const CandidateCard = ({ name, text, isLoaded }) => {
 
   return (
     <HStack
-      className="w-full p-3 text-center text-white border-2 rounded-2xl"
+      className="w-full p-3 my-2 text-center text-white border-2 rounded-2xl"
       bgColor={isLoaded ? candidate.color : "#e3e1dc"}
     >
       <SkeletonCircle

@@ -1,11 +1,11 @@
-import { useAuth } from "../../context/auth-context";
-import { SessionBox } from "../../components/SessionBox";
-import { CreateSessionForm } from "../../components/CreateSessionForm/CreateSessionForm";
-import { useRef } from "react";
-import { Center, Heading, HStack, VStack, Grid, Flex } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
+import { Heading, HStack, VStack } from "@chakra-ui/layout";
+import { useRef } from "react";
+import { CreateSessionForm } from "../../components/CreateSessionForm/CreateSessionForm";
+import { SessionBox } from "../../components/SessionBox";
 import { useAdminContext } from "../../context/admin-context";
+import { useAuth } from "../../context/auth-context";
 
 export function AdminPanel() {
   const { logout } = useAuth();
@@ -15,11 +15,11 @@ export function AdminPanel() {
   const { sessions, isLoaded } = useAdminContext();
 
   return (
-    <>
+    <div className="text-center">
       <Heading>ADMIN DASHBOARD</Heading>
       {isLoaded ? (
-        <Flex className="flex-col">
-          <HStack className="">
+        <div className="flex flex-col">
+          <HStack>
             <HStack margin="3" spacing="3">
               <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
                 Skapa ny föreställning
@@ -34,22 +34,24 @@ export function AdminPanel() {
               size="md"
             />
           </HStack>
-          <VStack>
-            <Heading padding="3" size="lg">
-              Föreställningar
-            </Heading>
+          <Heading padding="3" size="lg" className="text-center">
+            Föreställningar
+          </Heading>
+          <VStack spacing="10" marginBottom={10}>
             {sessions ? (
-              sessions.map((session) => (
-                <SessionBox key={session.sessionID} session={session} />
-              ))
+              sessions
+                .sort((a, b) => new Date(b.showDate) - new Date(a.showDate))
+                .map((session) => (
+                  <SessionBox key={session.sessionID} session={session} />
+                ))
             ) : (
               <p>Det finns inga föreställningar.</p>
             )}
           </VStack>
-        </Flex>
+        </div>
       ) : (
         <Heading>Laddar admin dashboard...</Heading>
       )}
-    </>
+    </div>
   );
 }

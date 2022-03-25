@@ -4,17 +4,16 @@ import {
   Box,
   Center,
   Container,
-  Heading,
-  Text,
   Grid,
   GridItem,
+  Heading,
+  Text,
 } from "@chakra-ui/layout";
-import { Image, SkeletonCircle } from "@chakra-ui/react";
+import { Image, Skeleton } from "@chakra-ui/react";
 import { useState } from "react";
 import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
 import { useSessionContext } from "./context/session-context";
-import { Skeleton } from "@chakra-ui/react";
 
 export function UnauthenticatedApp() {
   const { login, registerWithRandomEmail } = useAuth();
@@ -104,13 +103,17 @@ export function UnauthenticatedApp() {
           </Grid>
         </Container>
       )}
-      <Button
-        backgroundColor={"white"}
-        position="fixed"
-        bottom="0"
-        margin="30px"
-        onClick={() => setAdminShow(!adminShow)}
-      ></Button>
+      <div className="invisible lg:visible">
+        <Button
+          backgroundColor={"white"}
+          position="fixed"
+          bottom="0"
+          margin="30px"
+          onClick={() => setAdminShow(!adminShow)}
+        >
+          Admin
+        </Button>
+      </div>
       {adminShow && (
         <Box
           className="p-2 bg-white border-2 rounded-md"

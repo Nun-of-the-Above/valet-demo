@@ -1,4 +1,4 @@
-import { Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/layout";
+import { Grid, Heading, VStack } from "@chakra-ui/layout";
 import { useState } from "react";
 import {
   INITIAL_CANDIDATES,
@@ -17,24 +17,23 @@ export const VotingBox = () => {
   return (
     <>
       {votingEnabled ? (
-        <VStack className="h-full pb-10 mb-32 place-content-end">
-          <div className="flex flex-col h-full place-content-center">
+        <>
+          <div className="flex flex-col h-full px-12 pt-[15px] place-content-center">
             <RoundTimer
               round={activeRound}
               setVotingEnabled={setVotingEnabled}
-              className="px-12 py-6"
             />
           </div>
           {activeRound.number === 0 ? (
             <>
-              <Heading className="px-12 py-2 text-center" size="lg">
+              <Heading className="px-12 pb-[3vh] text-center" size="lg">
                 {userVoteInActiveRound
-                  ? "Tack för din röst!"
+                  ? "Tack för din röst! Invänta resultatet."
                   : "Rösta på det väder du tycker det är idag"}
               </Heading>
               <Grid
                 gridTemplateColumns="1fr 1fr"
-                className="gap-4 place-items-center"
+                className="gap-4 px-5 pb-5 place-items-center"
               >
                 {TEST_CANDIDATES.map((candidate) => (
                   <CandidateVotingButton
@@ -48,15 +47,20 @@ export const VotingBox = () => {
           ) : (
             <>
               <div className="flex flex-col h-full place-content-center">
-                <Heading className="px-12 py-6 text-center" size="lg">
-                  {userVoteInActiveRound
-                    ? "Tack för din röst!"
-                    : "Rösta på den kandidat du vill ska vara kvar"}
+                <Heading className="px-12 py-[3vh] text-center" size="lg">
+                  {userVoteInActiveRound ? (
+                    <>
+                      <p>Tack för din röst!</p>
+                      <p>Invänta resultatet.</p>
+                    </>
+                  ) : (
+                    "Rösta på den kandidat du vill ska vara kvar"
+                  )}
                 </Heading>
               </div>
               <Grid
                 gridTemplateColumns="1fr 1fr"
-                className="gap-4 place-items-center"
+                className="gap-4 px-5 pb-5 place-items-center"
               >
                 {INITIAL_CANDIDATES.sort((a, b) => {
                   if (a < b) return 1;
@@ -72,7 +76,7 @@ export const VotingBox = () => {
               </Grid>
             </>
           )}
-        </VStack>
+        </>
       ) : (
         <VStack>
           <Heading>Röstningen är stängd.</Heading>

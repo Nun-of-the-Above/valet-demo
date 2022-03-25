@@ -7,8 +7,10 @@ import {
   AlertDialogOverlay,
   Button,
 } from "@chakra-ui/react";
+import { collection, doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
 import { useAdminContext } from "../../context/admin-context";
+import { db } from "../../firestore";
 import { deleteSession } from "../../helpers/deleteSession";
 
 export const DeleteSessionButton = ({ session }) => {
@@ -16,6 +18,7 @@ export const DeleteSessionButton = ({ session }) => {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
   const { rounds, votes } = useAdminContext();
+  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
 
   return (
     <>
@@ -46,6 +49,8 @@ export const DeleteSessionButton = ({ session }) => {
                 colorScheme="red"
                 onClick={() => {
                   onClose();
+                  //Deactivate the session to log all users out
+                  updateDoc(sessionRef, { active: false, done: true });
                   deleteSession({ session, rounds, votes });
                 }}
                 ml={3}

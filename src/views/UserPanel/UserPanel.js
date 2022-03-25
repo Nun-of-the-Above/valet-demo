@@ -1,11 +1,11 @@
+import { Center, Heading, VStack } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { CandidateCard } from "../../components/CandidateCard";
+import { ResultsBoxUserView } from "../../components/ResultsBoxUserView/ResultsBoxUserView";
+import { VotingBox } from "../../components/VotingBox";
 import { useAuth } from "../../context/auth-context";
 import { useSessionContext } from "../../context/session-context";
-import { useEffect, useState } from "react";
-import { Heading, Text, VStack, Center, Container } from "@chakra-ui/layout";
-import { VotingBox } from "../../components/VotingBox";
-import { ResultsBoxUserView } from "../../components/ResultsBoxUserView/ResultsBoxUserView";
-import { Spinner } from "@chakra-ui/react";
-import { CandidateCard } from "../../components/CandidateCard";
 
 export function UserPanel() {
   const { logout } = useAuth();
@@ -38,7 +38,7 @@ export function UserPanel() {
               {activeRound.votingActive && <VotingBox />}
 
               {activeRound.done && !activeRound.displayResults && (
-                <div className="flex flex-col gap-4 h-3/4 place-content-center place-items-center animate-pulse">
+                <div className="flex flex-col gap-4 mt-10 place-content-center place-items-center animate-pulse">
                   {/* <Heading className="text-center">Tack för din röst!</Heading> */}
                   {/* <Heading size="md" className="text-center"> */}
                   {/* Invänta resultatet. */}
@@ -52,7 +52,7 @@ export function UserPanel() {
               )}
 
               {!activeRound.done && !activeRound.votingActive && (
-                <div className="flex flex-col h-3/4 place-content-center">
+                <div className="flex flex-col mt-5 place-content-center">
                   <Heading size="md" className="mt-4 text-center">
                     Ingen röstning aktiv just nu.
                   </Heading>
@@ -64,8 +64,8 @@ export function UserPanel() {
           ) : (
             <>
               {!activeSession.done && (
-                <div className="flex flex-col h-3/4 place-content-center">
-                  <Heading size="md" className="mt-4">
+                <div className="flex flex-col w-full mt-5 place-content-center">
+                  <Heading size="md" className="mt-4 text-center">
                     Ingen röstning aktiv just nu.
                   </Heading>
                 </div>
@@ -81,9 +81,7 @@ export function UserPanel() {
           )}
         </>
       ) : (
-        <Center>
-          <Spinner />
-        </Center>
+        <Center margin={10}>{/* <Spinner /> */}</Center>
       )}
     </>
   );

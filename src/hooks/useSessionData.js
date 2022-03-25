@@ -1,6 +1,6 @@
-import { collection, query, where, onSnapshot } from "@firebase/firestore";
-import { db } from "../firestore";
+import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { useEffect, useState } from "react";
+import { db } from "../firestore";
 const R = require("ramda");
 
 // Gets active session from firestore

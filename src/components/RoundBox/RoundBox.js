@@ -1,16 +1,15 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Grid, GridItem, Heading, VStack, Text } from "@chakra-ui/layout";
+import { Box, Heading, VStack } from "@chakra-ui/layout";
 import { collection, doc, updateDoc } from "@firebase/firestore";
 import { useEffect, useState } from "react";
+import { AiOutlineArrowUp } from "react-icons/ai";
+import { TEST_CANDIDATES } from "../../constants/CANDIDATES_TOOLKIT";
 import { useAdminContext } from "../../context/admin-context";
 import { db } from "../../firestore";
-import { RoundTimer } from "../RoundTimer/RoundTimer";
 import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers";
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
-import { TEST_CANDIDATES } from "../../constants/CANDIDATES_TOOLKIT";
-import { TempAdminFastVoting } from "../../components/TempAdminFastVoting";
 import { CandidateCard } from "../CandidateCard";
-import { AiOutlineArrowUp } from "react-icons/ai";
+import { RoundTimer } from "../RoundTimer/RoundTimer";
 
 export function RoundBox({ round, disabled }) {
   const roundRef = doc(collection(db, "rounds"), round.roundID);
@@ -162,7 +161,7 @@ export function RoundBox({ round, disabled }) {
   );
 }
 
-const ResultsBoxAdmin = ({ voteCount, round }) => {
+const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {

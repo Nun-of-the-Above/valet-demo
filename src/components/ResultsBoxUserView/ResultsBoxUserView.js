@@ -1,4 +1,4 @@
-import { Flex, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
+import { Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import {
@@ -7,7 +7,6 @@ import {
 } from "../../constants/CANDIDATES_TOOLKIT";
 import { useSessionContext } from "../../context/session-context";
 import { CandidateCard } from "../CandidateCard";
-import { Grid, GridItem } from "@chakra-ui/react";
 
 export const ResultsBoxUserView = () => {
   const { activeRound, votesInActiveRound, currCandidates } =
@@ -54,7 +53,7 @@ export const ResultsBoxUserView = () => {
     <>
       {activeRound && activeRound.displayResults && (
         <>
-          <div className="flex flex-col w-full h-full gap-10 place-content-center">
+          <div className="flex flex-col w-full h-full pt-3 place-content-center">
             <PieChart width={300} height={110} className="self-center -mb-3">
               <Pie
                 nameKey="name"
@@ -83,22 +82,20 @@ export const ResultsBoxUserView = () => {
                   ))}
               </Pie>
             </PieChart>
-
             {data ? (
-              <VStack className="p-4 rounded-lg" width="full">
+              <div className="w-full p-4 rounded-lg">
                 {data
                   .map((obj) => [obj.name, obj.value])
                   .sort((a, b) => b[1] - a[1])
                   .map(([name, percentageOfVotes]) => (
                     <CandidateCard
-                      className="m-3"
                       key={name}
                       name={name}
                       text={`${percentageOfVotes}%`}
                       isLoaded={animationDone}
                     />
                   ))}
-              </VStack>
+              </div>
             ) : (
               <>
                 {data && (

@@ -4,7 +4,7 @@ import { SessionProvider } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
 import { AuthenticatedApp } from "./authenticated-app";
 import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, VStack } from "@chakra-ui/layout";
+import { Container, Divider, VStack, Grid } from "@chakra-ui/layout";
 import { Image, Spinner } from "@chakra-ui/react";
 
 function Home() {
@@ -15,18 +15,16 @@ function Home() {
 function App() {
   const queryClient = new QueryClient();
   return (
-    <VStack className="w-screen h-screen">
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <SessionProvider>
-            <Header />
-            <LoadingGateAuth>
-              <Home />
-            </LoadingGateAuth>
-          </SessionProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </VStack>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SessionProvider>
+          <Header />
+          <LoadingGateAuth>
+            <Home />
+          </LoadingGateAuth>
+        </SessionProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
@@ -36,7 +34,7 @@ const LoadingGateAuth = ({ children }) => {
   return isLoadedAuth ? (
     <>{children}</>
   ) : (
-    <VStack>
+    <VStack margin={10}>
       <Spinner />
     </VStack>
   );
@@ -45,7 +43,7 @@ const LoadingGateAuth = ({ children }) => {
 const Header = () => {
   return (
     <Container centerContent>
-      <Image src="/valetlogo.png" alt="VALET" height="13vh" objectFit="cover" />
+      <Image src="/valetlogo.png" alt="VALET" height="10vh" objectFit="cover" />
       <Divider />
     </Container>
   );
