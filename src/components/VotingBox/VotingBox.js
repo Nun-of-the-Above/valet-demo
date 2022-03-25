@@ -78,9 +78,9 @@ export const VotingBox = () => {
           )}
         </>
       ) : (
-        <VStack>
+        <VStack className="mt-10">
           <Heading>Röstningen är stängd.</Heading>
-          <Heading size="md">Invänta resultatet.</Heading>
+          <Heading size="lg">Invänta resultatet.</Heading>
         </VStack>
       )}
     </>
