@@ -65,17 +65,22 @@ export function UnauthenticatedApp() {
               <Text fontSize={"lg"} className="mb-10 text-center">
                 Både stora och små bokstäver funkar.
               </Text>
-              <div className="mb-2 border-2 border-green-400 rounded-md">
-                <Input
-                  placeholder="Lösenord..."
-                  type="text"
-                  value={secretWord}
-                  onChange={(e) => {
-                    setSecretWord(e.target.value);
-                    setError(false);
-                  }}
-                />
-              </div>
+
+              <Input
+                rounded={"md"}
+                size="lg"
+                border="2px"
+                borderColor={"green.400"}
+                placeholder="Skriv lösenordet här..."
+                type="text"
+                className="mb-2"
+                value={secretWord}
+                onChange={(e) => {
+                  setSecretWord(e.target.value);
+                  setError(false);
+                }}
+              />
+
               {error && (
                 <Heading size="sm" marginTop="3">
                   Fel lösenord. Försök igen.
@@ -84,7 +89,8 @@ export function UnauthenticatedApp() {
               <Center>
                 <Button
                   width={"full"}
-                  className="m-2 "
+                  size="lg"
+                  className="mt-2"
                   type="submit"
                   colorScheme={"green"}
                 >
