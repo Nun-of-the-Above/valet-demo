@@ -9,7 +9,7 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/layout";
-import { Image, Skeleton } from "@chakra-ui/react";
+import { Image, Skeleton, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
@@ -22,9 +22,10 @@ export function UnauthenticatedApp() {
   const [password, setPassword] = useState("");
   const [adminShow, setAdminShow] = useState(false);
 
+  const toast = useToast();
+
   const [secretWord, setSecretWord] = useState("");
   const [error, setError] = useState(false);
-
   const handleLogin = (e) => {
     e.preventDefault();
     login(email, password);
@@ -33,6 +34,14 @@ export function UnauthenticatedApp() {
   const handleRegisterRandom = (e) => {
     e.preventDefault();
     if (secretWord.toLowerCase() === activeSession.secretWord) {
+      toast({
+        title: "Hurra! Du är nu inloggad!",
+        description: `Lyssna på teknikern för fler instruktioner.`,
+        status: "success",
+        duration: 20000,
+        isClosable: false,
+        position: "top",
+      });
       registerWithRandomEmail();
     } else {
       setError(true);
@@ -47,14 +56,18 @@ export function UnauthenticatedApp() {
         activeSession.active ? (
           <Container>
             <form onSubmit={(e) => handleRegisterRandom(e)}>
-              <Heading size="md" className="mb-5 text-center">
+              <Heading size="md" className="my-5 text-center">
                 LÖSENORD
               </Heading>
-              <div className="mb-2 border-2 border-green-200 rounded-md">
+              <Text fontSize={"lg"} className="mt-5 text-center">
+                Lösenordet ropas ut av en tekniker i foajén.
+              </Text>
+              <Text fontSize={"lg"} className="mb-10 text-center">
+                Både stora och små bokstäver funkar.
+              </Text>
+              <div className="mb-2 border-2 border-green-400 rounded-md">
                 <Input
-                  className=""
-                  colorScheme={"green"}
-                  placeholder="Lösenord"
+                  placeholder="Lösenord..."
                   type="text"
                   value={secretWord}
                   onChange={(e) => {
@@ -69,7 +82,12 @@ export function UnauthenticatedApp() {
                 </Heading>
               )}
               <Center>
-                <Button type="submit" className="m-2 ">
+                <Button
+                  width={"full"}
+                  className="m-2 "
+                  type="submit"
+                  colorScheme={"green"}
+                >
                   LOGGA IN
                 </Button>
               </Center>
@@ -80,12 +98,18 @@ export function UnauthenticatedApp() {
         )
       ) : (
         <Container className="text-center">
-          <Heading size="md" as="h3" marginTop={5}>
+          <Heading size="md" as="h3" className="my-5">
             Välkommen till årets viktigaste val
           </Heading>
-          <Text fontSize="xl" className="mt-5">
-            Här kommer du få skriva in ett lösenord innan föreställningen
-            börjar.
+
+          <Text fontSize="2xl" className="my-6 leading-snug">
+            På den här hemsidan kommer du att rösta tre gånger under
+            föreställningens gång.
+          </Text>
+
+          <Text fontSize="2xl" className="my-6 leading-snug">
+            En tekniker kommer att leda dig igenom en test-röstning i foajén
+            innan föreställningen börjar.
           </Text>
 
           <Grid

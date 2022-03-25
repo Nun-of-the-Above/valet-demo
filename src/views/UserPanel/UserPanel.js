@@ -39,11 +39,6 @@ export function UserPanel() {
 
               {activeRound.done && !activeRound.displayResults && (
                 <div className="flex flex-col gap-4 mt-10 place-content-center place-items-center animate-pulse">
-                  {/* <Heading className="text-center">Tack för din röst!</Heading> */}
-                  {/* <Heading size="md" className="text-center"> */}
-                  {/* Invänta resultatet. */}
-                  {/* </Heading> */}
-
                   <Spinner size="xl" speed="1s" />
                   <Heading size="md" className="mb-2">
                     Rösterna räknas...
@@ -54,7 +49,7 @@ export function UserPanel() {
               {!activeRound.done && !activeRound.votingActive && (
                 <div className="flex flex-col mt-5 place-content-center">
                   <Heading size="md" className="mt-4 text-center">
-                    Ingen röstning aktiv just nu.
+                    Ingen röstning pågår just nu.
                   </Heading>
                 </div>
               )}
@@ -66,7 +61,7 @@ export function UserPanel() {
               {!activeSession.done && (
                 <div className="flex flex-col w-full mt-5 place-content-center">
                   <Heading size="md" className="mt-4 text-center">
-                    Ingen röstning aktiv just nu.
+                    Ingen röstning pågår just nu.
                   </Heading>
                 </div>
               )}
