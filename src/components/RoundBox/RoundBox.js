@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Heading, VStack } from "@chakra-ui/layout";
+import { Box, Heading, VStack, Text } from "@chakra-ui/layout";
 import { collection, doc, updateDoc } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai";
@@ -163,6 +163,7 @@ export function RoundBox({ round, disabled }) {
 
 const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
   const [data, setData] = useState(null);
+  const [numOfVotes, setNumOfVotes] = useState(0);
 
   useEffect(() => {
     if (!voteCount) return;
@@ -177,6 +178,7 @@ const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
         value: percent,
       }));
 
+    setNumOfVotes(totalVotes);
     setData(percentageData);
   }, [voteCount]);
 
@@ -185,6 +187,7 @@ const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
       <Heading className="text-center" size="md">
         RESULTAT
       </Heading>
+      <Text fontSize={"lg"}>Antal röster: {numOfVotes}</Text>
       <VStack
         padding="3"
         width="full"
