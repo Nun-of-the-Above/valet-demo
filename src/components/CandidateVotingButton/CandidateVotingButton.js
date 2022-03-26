@@ -67,15 +67,7 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
         border={"2px"}
         borderColor={isOpen ? "green" : "white"}
         className="flex flex-col "
-        opacity={
-          userVoteInActiveRound
-            ? userVoteInActiveRound.candidate === candidate
-              ? 1
-              : 0.5
-            : stillActive
-            ? 1
-            : 0.5
-        }
+        opacity={userVoteInActiveRound ? 0.5 : stillActive ? 1 : 0.5}
       >
         <SkeletonCircle size="100px" className="mb-2 " isLoaded={imageLoaded}>
           <Image
@@ -140,7 +132,7 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
                     description: `Din röst på ${candidate} har registrerats.`,
                     status: "success",
                     duration: 8000,
-                    isClosable: false,
+                    isClosable: true,
                     position: "top",
                   });
                 }}

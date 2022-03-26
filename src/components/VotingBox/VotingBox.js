@@ -27,9 +27,14 @@ export const VotingBox = () => {
           {activeRound.number === 0 ? (
             <>
               <Heading className="px-12 pb-[3vh] text-center" size="lg">
-                {userVoteInActiveRound
-                  ? "Tack för din röst! Invänta resultatet."
-                  : "Rösta på det väder du tycker det är idag"}
+                {userVoteInActiveRound ? (
+                  <>
+                    <p>Tack för din röst!</p>
+                    <p>Invänta resultatet.</p>
+                  </>
+                ) : (
+                  "Rösta på det väder du tycker det är idag"
+                )}
               </Heading>
               <Grid
                 gridTemplateColumns="1fr 1fr"
