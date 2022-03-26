@@ -21,6 +21,7 @@ export function UnauthenticatedApp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [adminShow, setAdminShow] = useState(false);
+  const CANDIDATES_NAMES = ["Alina", "Filip", "Simon", "Isabelle"];
 
   const toast = useToast();
 
@@ -47,8 +48,6 @@ export function UnauthenticatedApp() {
       setError(true);
     }
   };
-
-  const CANDIDATES_NAMES = ["Alina", "Filip", "Simon", "Isabelle"];
 
   return (
     <>

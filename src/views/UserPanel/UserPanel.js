@@ -1,4 +1,4 @@
-import { Center, Heading, VStack } from "@chakra-ui/layout";
+import { Heading, VStack } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { CandidateCard } from "../../components/CandidateCard";
@@ -10,16 +10,19 @@ import { useSessionContext } from "../../context/session-context";
 export function UserPanel() {
   const { logout } = useAuth();
 
-  const { isLoaded, activeSession, activeRound, currCandidates } =
+  const { isLoaded, activeSession, allSessions, activeRound, currCandidates } =
     useSessionContext();
   const [winnerDelay, setWinnerDelay] = useState(false);
 
-  // If there is no session, logout the user.
+  // If there is no session active, logout the user.
   useEffect(() => {
-    if (activeSession && !activeSession.active) {
+    if (allSessions && allSessions.every((s) => s.active === false)) {
+      console.log(
+        "User has old login-cookie. No session is active -> Cookie deleted."
+      );
       logout();
     }
-  }, [activeSession]);
+  }, [allSessions, logout]);
 
   useEffect(() => {
     if (activeSession && activeSession.done) {
@@ -31,7 +34,7 @@ export function UserPanel() {
 
   return (
     <>
-      {isLoaded ? (
+      {isLoaded && (
         <>
           {activeRound ? (
             <>
@@ -75,8 +78,6 @@ export function UserPanel() {
             </VStack>
           )}
         </>
-      ) : (
-        <Center margin={10}>{/* <Spinner /> */}</Center>
       )}
     </>
   );
