@@ -34,7 +34,7 @@ export function UserPanel() {
 
   return (
     <>
-      {isLoaded && (
+      {isLoaded ? (
         <>
           {activeRound ? (
             <>
@@ -78,6 +78,10 @@ export function UserPanel() {
             </VStack>
           )}
         </>
+      ) : (
+        <VStack className="mt-10">
+          <Spinner />
+        </VStack>
       )}
     </>
   );
