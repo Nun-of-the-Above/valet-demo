@@ -13,9 +13,10 @@ const SessionProvider = ({ children }) => {
   const { user } = useAuth();
 
   //Get all data
-  const { activeSession, rounds, votes, allSessions } = useSessionData();
+  const { activeSession, rounds, votes, allSessions, timer } = useSessionData();
 
-  const isLoaded = activeSession != null && rounds != null && votes != null;
+  const isLoaded =
+    activeSession != null && rounds != null && votes != null && timer != null;
 
   const activeRound = rounds
     ? rounds.find((r) => r.roundActive === true)
@@ -43,6 +44,7 @@ const SessionProvider = ({ children }) => {
     votesInActiveRound,
     userVoteInActiveRound,
     currCandidates,
+    timer,
   };
 
   return (

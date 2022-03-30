@@ -1,6 +1,7 @@
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firestore";
+import { getDatabase, ref, onValue } from "firebase/database";
 const R = require("ramda");
 
 // Gets active session from firestore
@@ -9,7 +10,18 @@ export function useSessionData() {
   const [rounds, setRounds] = useState(null);
   const [activeSession, setActiveSession] = useState(null);
   const [allSessions, setAllSessions] = useState(null);
+  const [timer, setTimer] = useState(null);
   const [value, setValue] = useState({});
+  const database = getDatabase();
+
+  useEffect(() => {
+    const timerRef = ref(database, "timer");
+    const unsubTimer = onValue(timerRef, (snapshot) => {
+      const data = snapshot.val();
+      setTimer(data.value);
+    });
+    return unsubTimer;
+  }, []);
 
   // Get all the sessions
   useEffect(() => {
@@ -99,6 +111,7 @@ export function useSessionData() {
       activeSession: activeSession,
       rounds: rounds,
       votes: votes,
+      timer: timer,
     });
   }, [votes, allSessions]); // eslint-disable-line no-eval
 

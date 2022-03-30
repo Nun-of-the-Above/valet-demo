@@ -22,6 +22,7 @@ export const VotingBox = () => {
             <RoundTimer
               round={activeRound}
               setVotingEnabled={setVotingEnabled}
+              isAdmin={false}
             />
           </div>
           {activeRound.number === 0 ? (

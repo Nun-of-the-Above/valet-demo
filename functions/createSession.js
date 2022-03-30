@@ -2,6 +2,8 @@ const functions = require("firebase-functions");
 
 const admin = require("firebase-admin");
 const db = admin.firestore();
+const database = admin.database();
+
 const INITIAL_CANDIDATES = ["Alina", "Isabelle", "Filip", "Simon"];
 const uuid = require("uuid");
 
@@ -23,6 +25,10 @@ exports.createSession = functions.https.onCall(async (data, context) => {
   const showDate = data.showDate;
   const stage = data.stage;
   const secretWord = data.secretWord;
+
+  await database.ref("timer").set({
+    value: 60,
+  });
 
   await db.collection("sessions").doc(sessionID).set({
     done: done,
@@ -52,6 +58,7 @@ exports.createSession = functions.https.onCall(async (data, context) => {
       votingActive: false,
       done: false,
       displayResults: false,
+      timer: 60,
     });
   }
 
@@ -69,6 +76,7 @@ exports.createSession = functions.https.onCall(async (data, context) => {
       votingActive: false,
       done: false,
       displayResults: false,
+      timer: 60,
     });
   }
 

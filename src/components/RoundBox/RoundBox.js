@@ -10,6 +10,7 @@ import { correctIfDuplicateLosers } from "../../helpers/correctIfDuplicateLosers
 import { updateCurrentCandidates } from "../../helpers/updateCurrentCandidates";
 import { CandidateCard } from "../CandidateCard";
 import { RoundTimer } from "../RoundTimer/RoundTimer";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 export function RoundBox({ round, disabled }) {
   const roundRef = doc(collection(db, "rounds"), round.roundID);
@@ -17,6 +18,7 @@ export function RoundBox({ round, disabled }) {
   const [session, setSession] = useState(null);
   const [votesInActiveRound, setVotesInActiveRound] = useState(null);
   const { sessions, rounds, votes } = useAdminContext();
+  const database = getDatabase();
 
   useEffect(() => {
     if (!votes) return;
@@ -42,6 +44,12 @@ export function RoundBox({ round, disabled }) {
 
     setSession(parentSession);
   }, [sessions, round]);
+
+  function writeTimeToDb(seconds) {
+    set(ref(database, "timer"), {
+      value: seconds,
+    });
+  }
 
   return (
     <Box
@@ -80,7 +88,7 @@ export function RoundBox({ round, disabled }) {
               STARTA RÖSTNING
             </Button>
 
-            <RoundTimer round={round} />
+            <RoundTimer round={round} isAdmin={true} />
 
             <Button
               colorScheme="red"
@@ -88,6 +96,7 @@ export function RoundBox({ round, disabled }) {
               disabled={!round.votingActive}
               onClick={() => {
                 updateDoc(roundRef, { votingActive: false, done: true });
+                writeTimeToDb(60);
                 if (round.number === 0) {
                   correctIfDuplicateLosers(
                     round,

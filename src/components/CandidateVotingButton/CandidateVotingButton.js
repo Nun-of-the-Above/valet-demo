@@ -123,6 +123,13 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
             <HStack className="w-full mb-5">
               <Button
                 className="flex-1 p-10"
+                colorScheme={"red"}
+                onClick={onClose}
+              >
+                AVBRYT
+              </Button>
+              <Button
+                className="flex-1 p-10"
                 colorScheme="green"
                 onClick={() => {
                   onClose();
@@ -139,13 +146,6 @@ export const CandidateVotingButton = ({ candidate, stillActive }) => {
                 ml={3}
               >
                 SKICKA RÖST
-              </Button>
-              <Button
-                className="flex-1 p-10"
-                colorScheme={"red"}
-                onClick={onClose}
-              >
-                AVBRYT
               </Button>
             </HStack>
           </DrawerBody>
