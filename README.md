@@ -12,21 +12,4 @@ There is no routing in the app. Instead authentication through Firebase determin
 
 Will probably transisition entire project to Typescript in the future.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run local`
-
-Runs the app with Firebase emulator suit (firestore, Cloud Functions, Authentication, hosting).\
-Open [http://localhost:4000](http://localhost:4000) to view the emulator dashboard in your browser.
-
-## Learn More
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The app currently needs me to admin to demo but will build a wizard for anyone to try it out stand-alone.
