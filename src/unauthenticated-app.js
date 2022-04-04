@@ -14,6 +14,7 @@ import { useState } from "react";
 import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
 import { useAuth } from "./context/auth-context";
 import { useSessionContext } from "./context/session-context";
+import { BsBoxArrowUpRight } from "react-icons/bs";
 
 export function UnauthenticatedApp() {
   const { login, registerWithRandomEmail } = useAuth();
@@ -103,19 +104,56 @@ export function UnauthenticatedApp() {
         )
       ) : (
         <Container className="text-center">
-          <Heading size="md" as="h3" className="my-5">
+          {/* <Heading size="md" as="h3" className="my-5">
             Välkommen till årets viktigaste val
-          </Heading>
+          </Heading> */}
 
-          <Text fontSize="2xl" className="my-6 leading-snug">
-            På den här hemsidan kommer du att rösta tre gånger under
-            föreställningens gång.
+          <Text fontSize="xl" className="my-6 leading-snug">
+            Detta är en demo av röstningssystemet som används i den interaktiva
+            föreställningen{" "}
+            <a
+              href="https://www.revetscenkonst.se/valet"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:text-pink-400"
+            >
+              VALET{" "}
+              <BsBoxArrowUpRight className="inline text-sm align-text-top" />
+            </a>{" "}
+            av{" "}
+            <a
+              href="https://www.revetscenkonst.se/valet"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:text-pink-400"
+            >
+              Revet Scenkonst{" "}
+              <BsBoxArrowUpRight className="inline text-sm align-text-top" />
+            </a>
+          </Text>
+          <Text fontSize="xl" className="mt-6 mb-3 leading-snug">
+            Byggd av Gabriel Brattgård.
+          </Text>
+          <Text fontSize="xl" className="leading-snug ">
+            <a
+              href="https://github.com/Nun-of-the-Above/valet-demo"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:text-pink-400"
+            >
+              Github{" "}
+              <BsBoxArrowUpRight className="inline text-sm align-text-top" />
+            </a>
           </Text>
 
-          <Text fontSize="2xl" className="my-6 leading-snug">
-            En tekniker kommer att leda dig igenom en test-röstning i foajén
-            innan föreställningen börjar.
-          </Text>
+          {/* <Text fontSize="xl" className="my-6 leading-snug">
+            Publiken röstar i tre omgångar under föreställningens gång.
+            Kandidaten med minst antal röster åker ut.
+          </Text> */}
+
+          {/* <Text fontSize="xl" className="my-6 leading-snug">
+            Föreställningen grenar ut sig i 24 möjliga scenarion.
+          </Text> */}
 
           <Grid
             gridTemplateColumns="1fr 1fr"
@@ -132,7 +170,7 @@ export function UnauthenticatedApp() {
           </Grid>
         </Container>
       )}
-      <div className="invisible lg:visible">
+      <div className="visible">
         <Button
           backgroundColor={"white"}
           position="fixed"

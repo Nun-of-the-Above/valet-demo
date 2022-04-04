@@ -24,3 +24,4 @@ yarn-error.log*
 
 debugToken.js
 firestore.js
+/.firebase

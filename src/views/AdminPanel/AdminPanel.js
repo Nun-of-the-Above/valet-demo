@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Heading, HStack, VStack } from "@chakra-ui/layout";
+import { Heading, HStack, VStack, Center } from "@chakra-ui/layout";
 import { useRef } from "react";
 import { CreateSessionForm } from "../../components/CreateSessionForm/CreateSessionForm";
 import { SessionBox } from "../../components/SessionBox";
@@ -19,13 +19,13 @@ export function AdminPanel() {
       <Heading>ADMIN DASHBOARD</Heading>
       {isLoaded ? (
         <div className="flex flex-col">
+          <Center margin="3" spacing="3">
+            <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+              Skapa ny föreställning
+            </Button>
+            <Button onClick={logout}>Logga ut</Button>
+          </Center>
           <HStack>
-            <HStack margin="3" spacing="3">
-              <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-                Skapa ny föreställning
-              </Button>
-              <Button onClick={logout}>Logga ut</Button>
-            </HStack>
             <CreateSessionForm
               isOpen={isOpen}
               placement="left"
@@ -34,10 +34,10 @@ export function AdminPanel() {
               size="md"
             />
           </HStack>
-          <Heading padding="3" size="lg" className="text-center">
+          {/* <Heading padding="3" size="lg" className="text-center">
             Föreställningar
-          </Heading>
-          <VStack spacing="10" marginBottom={10}>
+          </Heading> */}
+          <VStack spacing="10" marginBottom={10} className="m-4">
             {sessions ? (
               sessions
                 .sort((a, b) => new Date(b.showDate) - new Date(a.showDate))

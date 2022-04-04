@@ -53,7 +53,7 @@ export function RoundBox({ round, disabled }) {
 
   return (
     <Box
-      className="self-start p-5 rounded-3xl"
+      className="p-5 m-3 rounded-3xl"
       opacity={round.done && !round.roundActive ? "0.5" : "1"}
       bgColor={"white"}
       border={`1px solid ${round.roundActive ? "red" : "black"}`}
@@ -170,7 +170,7 @@ export function RoundBox({ round, disabled }) {
   );
 }
 
-const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
+const ResultsBoxAdmin = ({ voteCount, round }) => {
   const [data, setData] = useState(null);
   const [numOfVotes, setNumOfVotes] = useState(0);
 
@@ -197,11 +197,7 @@ const ResultsBoxAdmin = ({ voteCount, round, showResult }) => {
         RESULTAT
       </Heading>
       <Text fontSize={"lg"}>Antal röster: {numOfVotes}</Text>
-      <VStack
-        padding="3"
-        width="full"
-        className="rounded-lg place-content-evenly"
-      >
+      <VStack width="full" className="rounded-lg place-content-evenly">
         {data &&
           data
             .map((obj) => [obj.name, obj.value])

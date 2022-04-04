@@ -14,6 +14,7 @@ import {
   DrawerCloseButton,
 } from "@chakra-ui/react";
 import { FormLabel } from "@chakra-ui/react";
+import { createSession } from "../../helpers/createSession";
 
 export function CreateSessionForm({ isOpen, onClose, btnRef }) {
   const {
@@ -24,17 +25,12 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
 
   const onSubmit = (data) => createSession(data);
 
-  // ? This could be made local and batched?
-  // Would get rid of all the cold starts of it.
-  const createSession = httpsCallable(functions, "createSession");
-
   return (
     <Drawer
       isOpen={isOpen}
       placement="left"
       onClose={onClose}
       finalFocusRef={btnRef}
-      size="md"
     >
       <DrawerOverlay />
       <DrawerContent>
@@ -48,7 +44,7 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
                 {...register("showDate", { required: true })}
                 name="showDate"
                 type="datetime-local"
-                defaultValue="2022-02-11T18:00"
+                defaultValue="2022-04-05T18:00"
               />
               {errors.showDate && <span>Detta måste vara med.</span>}
 
@@ -72,17 +68,22 @@ export function CreateSessionForm({ isOpen, onClose, btnRef }) {
               />
               {errors.city && <span>Detta måste vara med.</span>}
 
-              <FormLabel htmlFor="secretWord">Hemligt ord</FormLabel>
+              <FormLabel htmlFor="secretWord">Lösenord</FormLabel>
               <Input
                 {...register("secretWord", { required: true })}
-                placeholder="Ordet användarna loggar in i appen med."
+                placeholder="Föreställningens lösenord."
                 name="secretWord"
                 type="text"
-                defaultValue="falukorv"
+                defaultValue="charm"
               />
               {errors.secretWord && <span>Detta måste vara med.</span>}
 
-              <Button type="submit" variant="solid" onClick={onClose}>
+              <Button
+                type="submit"
+                variant="solid"
+                onClick={onClose}
+                colorScheme="green"
+              >
                 SKAPA FÖRESTÄLLNING
               </Button>
             </Stack>

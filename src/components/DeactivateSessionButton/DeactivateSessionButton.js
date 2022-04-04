@@ -9,21 +9,24 @@ import {
 } from "@chakra-ui/react";
 import { collection, doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
-import { useAdminContext } from "../../context/admin-context";
 import { db } from "../../firestore";
-import { deleteSession } from "../../helpers/deleteSession";
 
-export const DeleteSessionButton = ({ session }) => {
+export const DeactivateSessionButton = ({ session, disabled }) => {
+  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
+
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
-  const { rounds, votes } = useAdminContext();
-  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
 
   return (
     <>
-      <Button colorScheme="red" w={"full"} onClick={() => setIsOpen(true)}>
-        RADERA FÖRESTÄLLNING
+      <Button
+        colorScheme="red"
+        disabled={!session.active || disabled}
+        onClick={() => setIsOpen(true)}
+        w={"full"}
+      >
+        STÄNG FÖRESTÄLLNING
       </Button>
 
       <AlertDialog
@@ -34,11 +37,12 @@ export const DeleteSessionButton = ({ session }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Session
+              Är du säker?
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Är du säker? Föreställningen försvinner för alltid.
+              Alla användare kommer loggas ut. Föreställning sätts till
+              "Genomförd".
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -46,16 +50,15 @@ export const DeleteSessionButton = ({ session }) => {
                 Avbryt
               </Button>
               <Button
-                colorScheme="red"
+                marginLeft="3"
+                colorScheme={"red"}
+                disabled={!session.active}
                 onClick={() => {
                   onClose();
-                  //Deactivate the session to log all users out
                   updateDoc(sessionRef, { active: false, done: true });
-                  deleteSession({ session, rounds, votes });
                 }}
-                ml={3}
               >
-                Radera
+                STÄNG FÖRESTÄLLNING
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

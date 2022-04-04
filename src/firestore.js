@@ -1,39 +1,30 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getDatabase, connectDatabaseEmulator } from "firebase/database";
-import { debugToken } from "./debugToken";
-const {
-  initializeAppCheck,
-  ReCaptchaV3Provider,
-} = require("firebase/app-check");
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBt9-jaNbY3Z98P_YZJmGEW56xSBb89TKA",
-  authDomain: "valet-app-2ab35.firebaseapp.com",
-  projectId: "valet-app-2ab35",
+  apiKey: "AIzaSyCB7p911Q9X6-Q-FtVS1qUSl1MqEHqZdBc",
+  authDomain: "valet-demo-b45dd.firebaseapp.com",
+  projectId: "valet-demo-b45dd",
   databaseURL:
-    "https://valet-app-2ab35-default-rtdb.europe-west1.firebasedatabase.app",
-  storageBucket: "valet-app-2ab35.appspot.com",
-  messagingSenderId: "363053276470",
-  appId: "1:363053276470:web:1cf479399af2286b366797",
-  measurementId: "G-F39P75W8Z7",
+    "https://valet-demo-b45dd-default-rtdb.europe-west1.firebasedatabase.app",
+  storageBucket: "valet-demo-b45dd.appspot.com",
+  messagingSenderId: "992353467476",
+  appId: "1:992353467476:web:75ef22ee1172f3505481c1",
+  measurementId: "G-PD28ZK7S3R",
 };
-// eslint-disable-next-line no-restricted-globals
-self.FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken;
 
-const app = initializeApp(firebaseConfig);
+console.log(getApps().length);
+
+const app =
+  getApps().length === 0
+    ? initializeApp(firebaseConfig)
+    : getApp(firebaseConfig);
+
 const db = getFirestore(app);
 const functions = getFunctions(app);
 const database = getDatabase();
-
-initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6LfAjlkeAAAAAKxuwZIRCFrdqiaJuGNqYlzfC1K6"),
-
-  // Optional argument. If true, the SDK automatically refreshes App Check
-  // tokens as needed.
-  isTokenAutoRefreshEnabled: true,
-});
 
 // eslint-disable-next-line no-restricted-globals
 if (location.hostname === "localhost") {

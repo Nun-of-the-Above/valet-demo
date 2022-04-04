@@ -1,19 +1,12 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/layout";
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Spinner,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/react";
 import { collection, doc, updateDoc } from "@firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useAdminContext } from "../../context/admin-context";
 import { db } from "../../firestore";
 import { DeleteSessionButton } from "../DeleteSessionButton";
+import { DeactivateSessionButton } from "../DeactivateSessionButton";
 import { RoundBox } from "../RoundBox";
 
 export function SessionBox({ session }) {
@@ -50,23 +43,22 @@ export function SessionBox({ session }) {
           bgColor={session.active ? "green.100" : "gray.100"}
           border={session.active ? "3px solid green" : "1px solid black"}
         >
-          <Heading as="h2" size="lg" className="text-center ">
+          <Heading as="h2" size="sm" className="text-center ">
             {new Date(session.showDate).toDateString()}, {session.stage},{" "}
             {session.city}
           </Heading>
-          <SessionInfoBox session={session} />
+          {/* <SessionInfoBox session={session} /> */}
 
-          <HStack className="justify-around w-full my-8">
+          <VStack className="justify-around my-8">
             <ActivateSessionButton session={session} disabled={activeSession} />
             <DeactivateSessionButton
               session={session}
               disabled={!allRoundsDone}
             />
-            {/* <SetSessionDoneButton session={session} disabled={activeSession} /> */}
             <DeleteSessionButton session={session} />
-          </HStack>
+          </VStack>
 
-          <HStack className="justify-between">
+          <div className="flex flex-col">
             {rounds &&
               rounds
                 .filter((round) => round.parentSessionID === session.sessionID)
@@ -76,9 +68,9 @@ export function SessionBox({ session }) {
                     .map((round) => round)
                     .sort((a, b) => a[0] - b[0]);
 
-                  const roundBefore = roundsSorted[round.number - 1];
+                  const roundBefore = roundsSorted[round.number - 2];
 
-                  if (round.number === 0) {
+                  if (round.number === 1) {
                     shouldBeActive = true;
                   } else if (
                     roundBefore &&
@@ -96,7 +88,7 @@ export function SessionBox({ session }) {
                     />
                   );
                 })}
-          </HStack>
+          </div>
         </Box>
       )}
     </>
@@ -105,34 +97,30 @@ export function SessionBox({ session }) {
 
 const SessionInfoBox = ({ session }) => {
   return (
-    <Flex className="justify-between p-2 border-2 border-black rounded-lg">
-      <Flex className="flex-col">
-        <Text>
-          <span className="font-bold">Status:</span>{" "}
-          {session.active ? "Öppen" : "Stängd"}
-        </Text>
-        <Text>
-          <span className="font-bold">Speldatum:</span>
-          {new Date(session.showDate).toLocaleString()}
-        </Text>
-      </Flex>
-      <Flex className="flex-col">
-        <Text>
-          <span className="font-bold">Scen:</span> {session.stage}
-        </Text>
-        <Text>
-          <span className="font-bold">Stad:</span> {session.city}
-        </Text>
-      </Flex>
-      <Flex className="flex-col">
-        <Text>
-          <span className="font-bold">Genomförd:</span>{" "}
-          {session.done ? "Ja" : "Nej"}
-        </Text>
-        <Text>
-          <span className="font-bold">Hemligt ord:</span> {session.secretWord}
-        </Text>
-      </Flex>
+    <Flex className="flex-col justify-between p-2 border-2 border-black rounded-lg">
+      <Text>
+        <span className="font-bold">Status:</span>{" "}
+        {session.active ? "Öppen" : "Stängd"}
+      </Text>
+      <Text>
+        <span className="font-bold">Speldatum:</span>
+        {new Date(session.showDate).toLocaleString()}
+      </Text>
+
+      <Text>
+        <span className="font-bold">Scen:</span> {session.stage}
+      </Text>
+      <Text>
+        <span className="font-bold">Stad:</span> {session.city}
+      </Text>
+
+      <Text>
+        <span className="font-bold">Genomförd:</span>{" "}
+        {session.done ? "Ja" : "Nej"}
+      </Text>
+      <Text>
+        <span className="font-bold">Lösenord:</span> {session.secretWord}
+      </Text>
     </Flex>
   );
 };
@@ -142,6 +130,7 @@ const ActivateSessionButton = ({ session, disabled }) => {
 
   return (
     <Button
+      w={"full"}
       colorScheme={"green"}
       disabled={session.active || session.done || disabled}
       onClick={() => {
@@ -158,6 +147,7 @@ const SetSessionDoneButton = ({ session, disabled }) => {
 
   return (
     <Button
+      w={"full"}
       onClick={() => {
         updateDoc(sessionRef, { done: true });
       }}
@@ -165,61 +155,5 @@ const SetSessionDoneButton = ({ session, disabled }) => {
     >
       Sätt till klar och visa sista bild
     </Button>
-  );
-};
-
-const DeactivateSessionButton = ({ session, disabled }) => {
-  const sessionRef = doc(collection(db, "sessions"), session.sessionID);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = useRef();
-
-  return (
-    <>
-      <Button
-        colorScheme="red"
-        disabled={!session.active || disabled}
-        onClick={() => setIsOpen(true)}
-      >
-        Stäng föreställning
-      </Button>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Är du säker?
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Alla användare kommer loggas ut. Föreställning sätts till
-              "Genomförd".
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Avbryt
-              </Button>
-              <Button
-                marginLeft="3"
-                colorScheme={"red"}
-                disabled={!session.active}
-                onClick={() => {
-                  onClose();
-                  updateDoc(sessionRef, { active: false, done: true });
-                }}
-              >
-                STÄNG FÖRESTÄLLNING
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
   );
 };
