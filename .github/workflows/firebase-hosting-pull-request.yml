@@ -13,5 +13,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_VALET_APP_2AB35 }}'
-          projectId: valet-app-2ab35
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_VALET_DEMO_B45DD }}'
+          projectId: valet-demo-b45dd
