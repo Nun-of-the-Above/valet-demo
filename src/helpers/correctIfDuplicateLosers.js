@@ -10,6 +10,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../firestore";
 
+// Randomly selects a loser if there are duplicates.
 export const correctIfDuplicateLosers = async (
   round,
   voteCount,

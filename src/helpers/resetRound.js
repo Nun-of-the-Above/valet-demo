@@ -1,14 +1,8 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  writeBatch,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { doc, writeBatch } from "firebase/firestore";
 import { db } from "../firestore";
 
+// Not used atm.
+// TODO: Rebuild this.
 export const resetRound = async (round, voteCount, votesOwnedByRound) => {
   //WHAT I WANT
   //Get the loser from the voteCount attached to round.voteCount.

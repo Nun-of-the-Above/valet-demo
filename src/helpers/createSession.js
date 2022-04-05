@@ -1,24 +1,15 @@
-import { doc, setDoc, writeBatch } from "firebase/firestore";
+import { doc, writeBatch } from "firebase/firestore";
 import { ref, set, getDatabase } from "firebase/database";
 import { db } from "../firestore";
 import { v4 as uuidv4 } from "uuid";
 import { INITIAL_CANDIDATES } from "../constants/CANDIDATES_TOOLKIT";
 
+// Creates a new session and rounds in firestore
 export const createSession = async (data) => {
   const database = getDatabase();
-
-  //Set up of init values of a session.
-  const active = false;
-  const done = false;
-  const createdAt = 0;
-  const updatedAt = 0;
   const sessionID = uuidv4();
-  const candidatesLeft = INITIAL_CANDIDATES;
-  const city = data.city;
-  const showDate = data.showDate;
-  const stage = data.stage;
-  const secretWord = data.secretWord;
 
+  // Helper function for creating rounds.
   const getRoundObj = (sessionID, number) => ({
     roundID: number + "-" + sessionID,
     parentSessionID: sessionID,
@@ -36,7 +27,7 @@ export const createSession = async (data) => {
       value: 60,
     });
   } catch (e) {
-    console.error("Error setting RTDB value to 60: ", e);
+    console.error("Error setting RTDB value to startvalue: ", e);
   }
 
   //Create session and rounds in firestore.
@@ -45,16 +36,14 @@ export const createSession = async (data) => {
     const sessionRef = doc(db, "sessions", sessionID);
 
     batch.set(sessionRef, {
-      done: done,
-      active: active,
-      city: city,
-      showDate: showDate,
-      stage: stage,
-      secretWord: secretWord,
+      done: false,
+      active: false,
+      city: data.city,
+      showDate: data.showDate,
+      stage: data.stage,
+      secretWord: data.secretWord,
       sessionID: sessionID,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      candidatesLeft: candidatesLeft,
+      candidatesLeft: INITIAL_CANDIDATES,
     });
 
     //TODO: Turn it into a helper function instead.

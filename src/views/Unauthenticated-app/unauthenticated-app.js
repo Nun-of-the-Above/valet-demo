@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/layout";
 import { Image, Skeleton, useToast } from "@chakra-ui/react";
 import { useState } from "react";
-import { CANDIDATES_TOOLKIT } from "./constants/CANDIDATES_TOOLKIT";
-import { useAuth } from "./context/auth-context";
-import { useSessionContext } from "./context/session-context";
+import { CANDIDATES_TOOLKIT } from "../../constants/CANDIDATES_TOOLKIT";
+import { useAuth } from "../../context/auth-context";
+import { useSessionContext } from "../../context/session-context";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 
 export function UnauthenticatedApp() {

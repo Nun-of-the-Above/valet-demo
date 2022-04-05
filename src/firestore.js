@@ -1,5 +1,4 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getDatabase, connectDatabaseEmulator } from "firebase/database";
 
@@ -15,25 +14,23 @@ const firebaseConfig = {
   measurementId: "G-PD28ZK7S3R",
 };
 
-console.log(getApps().length);
-
+// Check if app is initialized already.
 const app =
   getApps().length === 0
     ? initializeApp(firebaseConfig)
     : getApp(firebaseConfig);
 
 const db = getFirestore(app);
-const functions = getFunctions(app);
-const database = getDatabase();
+const realTimeDb = getDatabase();
 
+// Set up firebase emultators for local testing
 // eslint-disable-next-line no-restricted-globals
 if (location.hostname === "localhost") {
   console.log("We are now on the localhost.");
   connectFirestoreEmulator(db, "localhost", 8080);
-  connectFunctionsEmulator(functions, "localhost", 5001);
 
   // Point to the RTDB emulator running on localhost.
-  connectDatabaseEmulator(database, "localhost", 9000);
+  connectDatabaseEmulator(realTimeDb, "localhost", 9000);
 }
 
-export { app, db, functions };
+export { app, db };
