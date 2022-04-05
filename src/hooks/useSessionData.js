@@ -4,7 +4,7 @@ import { db } from "../firestore";
 import { getDatabase, ref, onValue } from "firebase/database";
 const R = require("ramda");
 
-// Gets active session from firestore
+// Gets all sessions and the active session for the UserPanel through a provider.
 export function useSessionData() {
   const [votes, setVotes] = useState(null);
   const [rounds, setRounds] = useState(null);
@@ -12,16 +12,17 @@ export function useSessionData() {
   const [allSessions, setAllSessions] = useState(null);
   const [timer, setTimer] = useState(null);
   const [value, setValue] = useState({});
-  const database = getDatabase();
+  const realTimeDatabase = getDatabase();
 
+  // Get the countdown timer from the RTDB
   useEffect(() => {
-    const timerRef = ref(database, "timer");
+    const timerRef = ref(realTimeDatabase, "timer");
     const unsubTimer = onValue(timerRef, (snapshot) => {
       const data = snapshot.val();
       setTimer(data.value);
     });
     return unsubTimer;
-  }, []);
+  }, [realTimeDatabase]);
 
   // Get all the sessions
   useEffect(() => {
@@ -59,7 +60,7 @@ export function useSessionData() {
 
   // Get rounds based on active session
   useEffect(() => {
-    //Not sure if this check works
+    // TODO: Double-check that this check works properly.
     if (!activeSession || R.isEmpty(activeSession)) return;
 
     const roundsQuery = query(
@@ -84,6 +85,7 @@ export function useSessionData() {
     };
   }, [activeSession]);
 
+  // Get votes for each round.
   useEffect(() => {
     if (!rounds) return;
     const votesQuery = query(
@@ -96,7 +98,6 @@ export function useSessionData() {
     );
 
     const unsubVotes = onSnapshot(votesQuery, (querySnapshot) => {
-      // Here we know that all data is gathered (session, rounds)
       setVotes(querySnapshot.docs.map((doc) => doc.data()));
     });
 
@@ -105,6 +106,7 @@ export function useSessionData() {
     };
   }, [rounds]);
 
+  // TODO: Rebuild this. Creates too many reads atm.
   useEffect(() => {
     setValue({
       allSessions: allSessions,
@@ -113,7 +115,7 @@ export function useSessionData() {
       votes: votes,
       timer: timer,
     });
-  }, [votes, allSessions]); // eslint-disable-line no-eval
+  }, [votes, allSessions]);
 
   return value;
 }

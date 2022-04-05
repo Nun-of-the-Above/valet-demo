@@ -2,6 +2,8 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firestore";
 
+// Gets sessions, rounds, votes for the admin.
+// Only available for the authenticated AdminPanel through a provider.
 export function useAdminData() {
   const [sessions, setSessions] = useState(null);
   const [rounds, setRounds] = useState(null);
@@ -52,7 +54,7 @@ export function useAdminData() {
       rounds: rounds,
       votes: votes,
     });
-  }, [sessions, rounds, votes]); // eslint-disable-line no-eval
+  }, [sessions, rounds, votes]);
 
   return value;
 }

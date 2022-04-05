@@ -1,6 +1,8 @@
 import { collection, doc, writeBatch } from "firebase/firestore";
 import { db } from "../firestore";
 
+// Batched delete of session, its rounds and all votes related to it.
+// TODO: All users registered in firebase needs to be cleared as well.
 export const deleteSession = async ({ rounds, session, votes }) => {
   const sessionRef = doc(collection(db, "sessions"), session.sessionID);
   try {
@@ -25,7 +27,9 @@ export const deleteSession = async ({ rounds, session, votes }) => {
     });
 
     batch.delete(sessionRef);
+
     await batch.commit();
+
     console.log(
       "Batch of session/rounds/votes was successfully deleted in db."
     );

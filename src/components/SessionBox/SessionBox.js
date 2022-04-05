@@ -1,12 +1,12 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
+import { Box, Heading, VStack } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/react";
 import { collection, doc, updateDoc } from "@firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAdminContext } from "../../context/admin-context";
 import { db } from "../../firestore";
-import { DeleteSessionButton } from "../DeleteSessionButton";
 import { DeactivateSessionButton } from "../DeactivateSessionButton";
+import { DeleteSessionButton } from "../DeleteSessionButton";
 import { RoundBox } from "../RoundBox";
 
 export function SessionBox({ session }) {
@@ -22,7 +22,7 @@ export function SessionBox({ session }) {
     }
   }, [sessions, activeSession]);
 
-  //TODO: Button still enabled. Don't know how to fix this yet. Something todo with refresh cycles.
+  //TODO: Button remains enabled. Don't know how to fix this yet. Something todo with refresh cycles and how I'm subscribing from firestore.
   useEffect(() => {
     if (!rounds) return;
     const doneAndClosed = rounds
@@ -94,36 +94,6 @@ export function SessionBox({ session }) {
     </>
   );
 }
-
-const SessionInfoBox = ({ session }) => {
-  return (
-    <Flex className="flex-col justify-between p-2 border-2 border-black rounded-lg">
-      <Text>
-        <span className="font-bold">Status:</span>{" "}
-        {session.active ? "Öppen" : "Stängd"}
-      </Text>
-      <Text>
-        <span className="font-bold">Speldatum:</span>
-        {new Date(session.showDate).toLocaleString()}
-      </Text>
-
-      <Text>
-        <span className="font-bold">Scen:</span> {session.stage}
-      </Text>
-      <Text>
-        <span className="font-bold">Stad:</span> {session.city}
-      </Text>
-
-      <Text>
-        <span className="font-bold">Genomförd:</span>{" "}
-        {session.done ? "Ja" : "Nej"}
-      </Text>
-      <Text>
-        <span className="font-bold">Lösenord:</span> {session.secretWord}
-      </Text>
-    </Flex>
-  );
-};
 
 const ActivateSessionButton = ({ session, disabled }) => {
   const sessionRef = doc(collection(db, "sessions"), session.sessionID);

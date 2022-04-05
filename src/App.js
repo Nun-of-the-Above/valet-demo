@@ -1,10 +1,9 @@
-import "./App.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { SessionProvider } from "./context/session-context";
 import { AuthProvider, useAuth } from "./context/auth-context";
-import { AuthenticatedApp } from "./authenticated-app";
-import { UnauthenticatedApp } from "./unauthenticated-app";
-import { Container, Divider, VStack, Grid } from "@chakra-ui/layout";
+import { AuthenticatedApp } from "./views/Authenticated-app/authenticated-app";
+import { UnauthenticatedApp } from "./views/Unauthenticated-app/unauthenticated-app";
+import { Container, Divider, VStack } from "@chakra-ui/layout";
 import { Image, Spinner } from "@chakra-ui/react";
 
 function Home() {
