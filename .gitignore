@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 debugToken.js
-firestore.js
+firebaseConfig.js
 /.firebase
